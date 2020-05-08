@@ -1,0 +1,7 @@
+/*
+!.gitignore
+!_config.yml
+!package-lock.json
+!package.json
+!scaffolds*/
+!source*/
