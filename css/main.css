@@ -177,7 +177,7 @@ body {
 body {
   background: var(--body-bg-color);
   color: var(--text-color);
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1em;
   line-height: 2;
 }
@@ -193,7 +193,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Asap', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: bold;
   line-height: 1.5;
   margin: 20px 0 15px;
@@ -382,6 +382,31 @@ td {
   transform: rotate(45deg);
   top: -5px;
 }
+.highlight-container {
+  position: relative;
+}
+.highlight-container:hover .copy-btn,
+.highlight-container .copy-btn:focus {
+  opacity: 1;
+}
+.copy-btn {
+  color: #333;
+  cursor: pointer;
+  line-height: 1.6;
+  opacity: 0;
+  padding: 2px 6px;
+  position: absolute;
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  background-color: #eee;
+  background-image: linear-gradient(#fcfcfc, #eee);
+  border: 1px solid #d5d5d5;
+  border-radius: 3px;
+  font-size: 0.8125em;
+  right: 4px;
+  top: 8px;
+}
 .highlight,
 pre {
   background: #f7f7f7;
@@ -391,7 +416,7 @@ pre {
 }
 pre,
 code {
-  font-family: consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
+  font-family: 'Roboto Mono', consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
 }
 code {
   background: #eee;
@@ -985,7 +1010,7 @@ pre .javascript .function {
   color: var(--brand-hover-color);
 }
 .site-title {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1.375em;
   font-weight: normal;
   margin: 0;
@@ -1168,7 +1193,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #455b9e;
+  background: #4e17f4;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1512,7 +1537,7 @@ pre .javascript .function {
   }
 }
 .post-body {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Roboto', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -1810,7 +1835,7 @@ pre .javascript .function {
 }
 .posts-expand .post-meta {
   color: #999;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Roboto', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 0.75em;
   margin: 3px 0 60px 0;
   text-align: center;
@@ -2438,4 +2463,129 @@ ul.breadcrumb li + li:last-child {
 }
 .links-of-blogroll-item {
   padding: 0;
+}
+.headband {
+  height: 0;
+}
+body {
+  background-color: #efefee;
+}
+.site-brand-container {
+  background-color: #683f2a;
+}
+.site-title {
+  font-family: 'ZCOOL XiaoWei';
+  font-weight: bold;
+}
+.sidebar {
+  background-color: #f5f4eb;
+}
+.sidebar-inner {
+  background-color: #f5f4eb;
+}
+.sidebar-nav .sidebar-nav-active {
+  border-bottom-color: #76241a;
+  color: #76241a;
+}
+.sidebar-nav .sidebar-nav-active:hover {
+  color: #76241a;
+}
+.sidebar-nav li:hover {
+  color: #76241a;
+}
+.post-toc ol a:hover {
+  color: #76241a;
+  border-bottom-color: #76241a;
+}
+.post-toc .nav .active > a {
+  color: #76241a;
+  border-bottom-color: #76241a;
+}
+.post-toc .nav .active > a:hover {
+  color: #76241a;
+  border-bottom-color: #76241a;
+}
+.menu {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: #f5f4eb;
+}
+.menu .menu-item a:hover {
+  color: #f5f4eb;
+  background-color: #683f2a;
+}
+.menu-item-active a {
+  color: #f5f4eb;
+  background-color: #683f2a;
+}
+.content-wrap {
+  background-color: #f5f4eb;
+}
+.posts-collapse::before {
+  background-color: #683f2a;
+}
+.posts-collapse .post-header:hover::before {
+  background-color: #683f2a;
+}
+.posts-collapse .post-title a {
+  color: #683f2a;
+}
+.posts-collapse .post-title a:hover {
+  color: #683f2a;
+}
+.post-body table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+  table-layout: fixed;
+}
+.post-body table thead {
+  background: #efefef;
+}
+.post-body table tbody tr {
+  background-color: #f5f5f5;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Asap', 'Domine', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', sans-serif;
+}
+body {
+  font-family: 'Roboto', "Noto Serif SC", sans-serif;
+}
+blockquote {
+  font-family: 'Roboto', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', sans-serif;
+}
+pre,
+code {
+  font-size: 0.8em;
+  font-family: 'Roboto Mono', 'Source Code Pro', consolas, Menlo, "Noto Serif SC", monospace;
+}
+.post-body {
+  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  color: #1e1f1c;
+}
+.post-body h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #683f2a;
+}
+.post-title {
+  color: #683f2a;
+}
+.post-title .post-title-link {
+  color: #683f2a;
+}
+.posts-expand .post-meta {
+  font-family: 'Asap', "Noto Serif SC", sans-serif;
+}
+.site-subtitle {
+  font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC';
 }

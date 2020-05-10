@@ -12,31 +12,31 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|ZCOOL XiaoWei:300,300italic,400,400italic,700,700italic|Asap:300,300italic,400,400italic,700,700italic|Roboto:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yifangdong.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Sache que ce n’est jamais facile au début, et que tu ne peux que progresser !  今天听到了一个很有见解的话。 你知道什么是左派，什么是右派吗？ 和政治有关吧，革命派和保守派 你看，这个说法很有趣，左派包括进步主义，社会主义，共产主义；而右派包括保守主义，反动主义，传统主义。你有没有发现左的都是积极的而右的都是消极的，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="左与右">
-<meta property="og:url" content="http://yifangdong.github.io/left-and-right/index.html">
+<meta property="og:url" content="http://yoursite.com/left-and-right/index.html">
 <meta property="og:site_name" content="萨朗儿的博客">
 <meta property="og:description" content="Sache que ce n’est jamais facile au début, et que tu ne peux que progresser !  今天听到了一个很有见解的话。 你知道什么是左派，什么是右派吗？ 和政治有关吧，革命派和保守派 你看，这个说法很有趣，左派包括进步主义，社会主义，共产主义；而右派包括保守主义，反动主义，传统主义。你有没有发现左的都是积极的而右的都是消极的，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yifangdong.github.io/images/left-and-right.png">
+<meta property="og:image" content="http://yoursite.com/images/left-and-right.png">
 <meta property="article:published_time" content="2015-12-23T23:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-08T17:35:23.215Z">
+<meta property="article:modified_time" content="2020-05-10T09:52:47.653Z">
 <meta property="article:author" content="Yifang DONG">
 <meta property="article:tag" content="日记">
 <meta property="article:tag" content="心得体会">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yifangdong.github.io/images/left-and-right.png">
+<meta name="twitter:image" content="http://yoursite.com/images/left-and-right.png">
 
-<link rel="canonical" href="http://yifangdong.github.io/left-and-right/">
+<link rel="canonical" href="http://yoursite.com/left-and-right/">
 
 
 <script id="page-configurations">
@@ -165,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yifangdong.github.io/left-and-right/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/left-and-right/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -378,6 +378,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -391,6 +392,65 @@
 
 <script src="/js/next-boot.js"></script>
 
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
@@ -410,9 +470,11 @@
 
 
 
+    <div id="pjax">
   
 
   
 
+    </div>
 </body>
 </html>
