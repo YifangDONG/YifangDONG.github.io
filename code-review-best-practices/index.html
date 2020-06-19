@@ -20,18 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="萨朗儿的博客">
-<meta property="og:url" content="http://yoursite.com/tags/java/index.html">
+  <meta name="description" content="As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review proc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Code review best practices">
+<meta property="og:url" content="http://yoursite.com/code-review-best-practices/index.html">
 <meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review proc">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-18T22:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-19T16:27:12.139Z">
 <meta property="article:author" content="Yifang DONG">
-<meta property="article:tag" content="technique">
-<meta property="article:tag" content=" travel">
-<meta property="article:tag" content=" thinking">
+<meta property="article:tag" content="English writing">
+<meta property="article:tag" content="最佳实践">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/java/">
+<link rel="canonical" href="http://yoursite.com/code-review-best-practices/">
 
 
 <script id="page-configurations">
@@ -39,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: java | 萨朗儿的博客</title>
+  <title>Code review best practices | 萨朗儿的博客</title>
   
 
 
@@ -153,51 +156,86 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">java
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/code-review-best-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Code review best practices
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-19T00:00:00+02:00">2020-06-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
+        <p>As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review process. This blog is inspired by <a href="https://blogs.oracle.com/javamagazine/five-code-review-antipatterns" target="_blank" rel="noopener">five code review antipatterns</a></p>
+<h3 id="Why-is-the-team-doing-reviews"><a href="#Why-is-the-team-doing-reviews" class="headerlink" title="Why is the team doing reviews?"></a>Why is the team doing reviews?</h3><p>There are several reasons we do the code review. The most common one is to ensure the code readability and verify the implementation matches the requirement. That’s also the simplest type of reviews for both reviewers and developers as our team agrees on what clean code looks like. The second reason is to review the design. Design reviews always take time as we always have lively debates, so when a developer thinks he needs a design review, he should ask for the code review as early as possible. Last but not least, the code review also serves to share knowledge. When developers have free time, they can review their coworkers’ code and thus keep up with what they have done so far.</p>
+<h3 id="What-are-team-members-looking-for"><a href="#What-are-team-members-looking-for" class="headerlink" title="What are team members looking for?"></a>What are team members looking for?</h3><p>The purpose of code review is to ensure code readability. We are looking to see if naming is ambiguous, if the method is decomposed illogically, or if the code is prone to errors.  We always use <em>Effective Java</em> as a reference for the review. For the design review, there’s no one standard to follow, because the code design is usually a question of how to make trade-offs. There’s no one perfect design. We can only make a good enough design. </p>
+<h3 id="Who-is-involved"><a href="#Who-is-involved" class="headerlink" title="Who is involved?"></a>Who is involved?</h3><p>Everyone should review the code, no matter if he is junior or senior. The code can also be reviewed by several people. But we need one assigned reviewer who is responsible for saying when the code is good enough to submit. This ensures that every code review has an owner to push to completion. When reviewers and developers have different opinions, an expert can be involved to make a final decision. </p>
+<h3 id="When-does-the-team-do-reviews"><a href="#When-does-the-team-do-reviews" class="headerlink" title="When does the team do reviews?"></a>When does the team do reviews?</h3><p>Usually, reviews are required when the developer finishes his coding. It’s a waste of time for a reviewer to review unfinished work. However, when many modules need to be modified, the developer should do a progressive review. Once part of the development is finished, he can ask for a review. As mentioned before, the design review should be initiated as early as possible to avoid having to redo the entire development. As for the knowledge sharing review, it can happen anytime. For example, when I come back from vacation or switch to another project, I can review the submitted code to catch up on the evolution of the project.</p>
+<h3 id="Where-does-the-team-do-reviews"><a href="#Where-does-the-team-do-reviews" class="headerlink" title="Where does the team do reviews?"></a>Where does the team do reviews?</h3><p>We use Swarm as a review tool. It provides some functions such as comparing the difference between two versions and notifying the developer once a comment is added or the review status is changed. We can also configure the rules such as the code with at least one vote-up can merge to the main branch. Comparing with Git Pull-Request, Swarm doesn’t integrate well with the Jenkins pipeline.</p>
+<p>Swarm is used for reviewers to add comments. Some might be a task to fix, others are open questions for better design or requests for information. When there are many small tasks added during the review, to avoid excessive back and forth, the developer and reviewer will work through the source code together.</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-01-02T00:00:00+01:00"
-              content="2019-01-02">
-          01-02
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
+              <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag"># 最佳实践</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/avoid-telescoping-constructor-pattern/" itemprop="url">
-            <span itemprop="name">重叠构造函数模式的替代模式</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/from-junior-to-senior-en/" rel="prev" title="From a junior to a senior">
+      <i class="fa fa-chevron-left"></i> From a junior to a senior
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -250,6 +288,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-is-the-team-doing-reviews"><span class="nav-number">1.</span> <span class="nav-text">Why is the team doing reviews?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-team-members-looking-for"><span class="nav-number">2.</span> <span class="nav-text">What are team members looking for?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Who-is-involved"><span class="nav-number">3.</span> <span class="nav-text">Who is involved?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When-does-the-team-do-reviews"><span class="nav-number">4.</span> <span class="nav-text">When does the team do reviews?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Where-does-the-team-do-reviews"><span class="nav-number">5.</span> <span class="nav-text">Where does the team do reviews?</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
