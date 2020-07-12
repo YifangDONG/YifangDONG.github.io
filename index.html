@@ -159,6 +159,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/takeaways-from-code-reading-workshop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/takeaways-from-code-reading-workshop/" class="post-title-link" itemprop="url">Takeaways from code reading workshop</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-07-12T00:00:00+02:00">2020-07-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modules, so we only need to focus on a quite small scope of code. But what if we need to work on an unknown module. How to start and get the 80% most important information quickly. From the code reading workshop, we got the following tips:</p>
+<h3 id="Start-from-the-functional-description"><a href="#Start-from-the-functional-description" class="headerlink" title="Start from the functional description"></a>Start from the functional description</h3><p>When we get a new module, the first thing is not to dive into the code, but to understand functionally speaking what’s the module used for. If it’s a UI module, manipulate a bit with the screen it creates. If it’s a domain module, understand the basic business logic it represents. If it’s a module for a certain process, comprehend the main steps of the process. We need to know what is the module used for before studying how the code achieves it.</p>
+<h3 id="Find-the-entry-point-class"><a href="#Find-the-entry-point-class" class="headerlink" title="Find the entry point class"></a>Find the entry point class</h3><p>The entry point class defines the boundary of the code. The entry point seems transparent when we work on a known project because usually we are not supposed to modify the entrance frequently. But to work on a project which we don’t have any knowledge, it’s always good to firstly find the entry point class. So that we can focus on code after and ignore all the code before the entry point class. Starting from that at least we know where to put our first debugger.</p>
+<h3 id="Ask-the-question-to-ourselves-How-the-code-decomposes"><a href="#Ask-the-question-to-ourselves-How-the-code-decomposes" class="headerlink" title="Ask the question to ourselves: How the code decomposes"></a>Ask the question to ourselves: How the code decomposes</h3><p>For the first analysis, there’s only one aim: to answer the question of how the code decomposes. Without a goal, we are easily attracted by some implementations and lost in the code jungle. The initial analysis should avoid going too deeply. Usually, the larger the codebase is, the shallower we should dig in it.</p>
+<p>Here are several approaches to discover the decomposition:</p>
+<h3 id="Glance-through-the-packages-to-have-a-general-image-of-the-module"><a href="#Glance-through-the-packages-to-have-a-general-image-of-the-module" class="headerlink" title="Glance through the packages to have a general image of the module"></a>Glance through the packages to have a general image of the module</h3><p>The package organization gives us a high-level decomposition clue. When we see a UI module that has packages named models, views, controllers, we can guess the module uses an MVC pattern. When we see a module that has packages named services, sessions, repositories, databases, we can find a layered relationship between them. Some packages use their domain languages as a name like queues, aggregates, filters, if we don’t know about the domain, it’s hard for us to figure out what it stands for. When we see some packages like tools, helpers, or utilities, we know we can skip them in the first analysis. However, sometimes we may find nothing senseful because of the ambiguity or evolution of the module.</p>
+<h3 id="Imports-are-helpful-to-discover-the-dependency"><a href="#Imports-are-helpful-to-discover-the-dependency" class="headerlink" title="Imports are helpful to discover the dependency"></a>Imports are helpful to discover the dependency</h3><p>By looking at the imports of each class, we can quickly build a dependency graph. From imports, we can analyze what are the internal and external dependencies. In a well-designed module, if a class has lots of external dependencies, it is normally a boundary class that should have little logic in it. From those classes, we can build the skeleton of the module. UML generated by IntelliJ can be an assistant to discover the dependency but if we are not careful about the direction to explore the dependency graph, it goes quickly to be very complex to read with classes and their arrows in all directions.</p>
+<h3 id="Get-more-information-from-interfaces-attributes-and-methods"><a href="#Get-more-information-from-interfaces-attributes-and-methods" class="headerlink" title="Get more information from interfaces, attributes, and methods"></a>Get more information from interfaces, attributes, and methods</h3><p>We go through interfaces to understand the main function. From attributes, we can see what is encapsulated. We can separate them by which is used for reading which is used for writing or is used for both. Or we can separate them by in which step it is used. Some times when the module is not well designed or it’s quite simple and small, the decomposition may be based on method rather than class. In this case, we need to dive into the method to analyze.  </p>
+<h3 id="Recognize-pattern-can-accelerate-analysis"><a href="#Recognize-pattern-can-accelerate-analysis" class="headerlink" title="Recognize pattern can accelerate analysis"></a>Recognize pattern can accelerate analysis</h3><p>When we find some patterns in some parts of the code, we can suppose what the rest of the code will do. In this situation, we are not reading the code, we just verify our hypothesis. We know where to go and what to look at, so we can analyze the code much quicker. This also means if we gathered lots of patterns in our head, we would read the code quicker.</p>
+<h3 id="Check-the-commit-history-if-we-find-something-strange"><a href="#Check-the-commit-history-if-we-find-something-strange" class="headerlink" title="Check the commit history if we find something strange"></a>Check the commit history if we find something strange</h3><p>Commit history gives us an idea about the code is new or old, it was modified frequently or it has rarely been modified since it was created. If we find some code is inconsistent with the context, we can check the commit history. If it’s in the same commit, maybe there is a hidden reason that we don’t know. If not, then the inconsistency may come from the developer thought differently with the previous one. We can also check the story description of this commit to know why the code was added like that if we want to go further.</p>
+<h3 id="Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code"><a href="#Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code" class="headerlink" title="Tests are useful when we want to understand a specific part of the code."></a>Tests are useful when we want to understand a specific part of the code.</h3><p>Sometimes tests are useful also. Unit tests can help us to understand a class, integration tests can help us to understand a whole business logic. Some tests are using the Given-When-Then style. They are executable documentation that gives us concrete examples of what is the expected behavior.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/how-to-test-an-asynchronous-request/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -470,7 +538,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019-feedback/" class="post-title-link" itemprop="url">2019 feedback</a>
+            <a href="/2019-feedback/" class="post-title-link" itemprop="url">2019 Feedback</a>
         </h2>
 
         <div class="post-meta">
@@ -959,74 +1027,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/the-magician's-code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yifang DONG">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="萨朗儿的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/the-magician's-code/" class="post-title-link" itemprop="url">魔术师准则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-06-22 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-22T00:00:00+02:00">2018-06-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>原文链接：<a href="http://thecodelesscode.com/case/195" target="_blank" rel="noopener">http://thecodelesscode.com/case/195</a></p>
-<p>一天，小和尚发现他的一个新的服务更新数据库失败，尽管并没有异常抛出。他向java大师Bawan寻求帮助。</p>
-<p>Bawan研究了一番，解释说：“你的服务中的自动生成代理对象没有提交事务是因为注释@Transactional注释在一个private的helper方法上，而不是注释在调用它的public的接口方法上。”</p>
-<p>“我不明白”，小和尚问：“什么是你说的代理对象？”</p>
-<p>Bawan怀疑地看着小和尚说：“告诉我AOP框架是如何提交和回滚事务的？”</p>
-<p>小和尚耸耸肩道:“它们是自动完成的。”</p>
-<p>Bawan 敲了一下小和尚的脑袋道：“如果我问你魔术师是如何让白兔消失的，你会回答‘魔法似的’？ 回答之前好好想想，否则我来示范如何让你消失。”</p>
-<p>小和尚摸摸脑袋说：“难道我们不应该期望第三方框架解放我们，使我们不用关心内部实现吗？这不是黑箱原则吗？”</p>
-<p>Bawan将手伸到小和尚左耳后面，从空中变出一个木勺，敲了小和尚道：“当一只兔子被放进黑箱然后瞬间消失，观众可以仅仅惊叹喔噢，这是观众的特权。但是我们站在舞台上的人应给知道这个把戏是如何做到的。无知的损失便是掌声的代价。”</p>
-<hr>
-<h2 id="评注："><a href="#评注：" class="headerlink" title="评注："></a>评注：</h2><p>软件开发是个庞大的工程，作为开发者，不可能懂得每个细节，但有一点很重要，要懂得你所使用的工具的基本实现原理。对于合格的开发者，基本的要求是知道常用的库的实现原理，技术栈的下一层是如何支持你的。例如web开发者应该知道应用层传输协议的原理。使用Collection的我们知道List，Set, Map 都是如何实现的。这样的好处在于对于复杂度有一个清晰的认识，并且可以一点一点地积累“全栈”技能。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1096,14 +1096,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
