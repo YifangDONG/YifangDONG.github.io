@@ -3,7 +3,7 @@ title: How to test an asynchronous request
 date: 2020-06-28
 tags:
 	- English writing
-	- java
+	- Java
 	- 测试
 	- Concurrency
 ---

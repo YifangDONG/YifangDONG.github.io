@@ -4,7 +4,7 @@ date: 2019-01-02
 tags:
 	- 设计模式
 	- 翻译
-	- java
+	- Java
 ---
 
 原文链接：https://www.vojtechruzicka.com/avoid-telescoping-constructor-pattern/
