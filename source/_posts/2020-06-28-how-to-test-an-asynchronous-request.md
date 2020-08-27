@@ -26,12 +26,14 @@ interface Server {
      
 class MyServer implements Server {
     ExecutorService executor = Executors.newSingleThreadExecutor();
-    Optional<Listener> listener = Optional.empty();
+    volatile Optional<Listener> listener = Optional.empty();
  
     @Override
     public void doAction(String action) {
         // Image here are some complex domain logic
-        executor.submit(() -> listener.get().onNotified(action));
+        listener.ifPresent(listener ->
+            executor.submit(() -> listener.onNotified(action))
+        );
     }
      
     @Override
@@ -214,7 +216,7 @@ interface Server {
      
 class MyServer implements Server {
     ExecutorService executor;
-    Optional<Listener> listener = Optional.empty();
+    volatile Optional<Listener> listener = Optional.empty();
  
     public MyServer(ExecutorService executor) {
         this.executor = executor;
@@ -223,7 +225,9 @@ class MyServer implements Server {
     @Override
     public void doAction(String action) {
         // Image here are some complex domain logic
-        executor.submit(() -> listener.get().onNotified(action));
+        listener.ifPresent(listener ->
+            executor.submit(() -> listener.onNotified(action))
+        );
     }
      
     @Override
