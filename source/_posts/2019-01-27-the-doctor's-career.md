@@ -1,6 +1,7 @@
 ---
 title: 医生的成长
-date: 2019-01-27 
+date: 2019-01-27
+lang: zh-CN 
 tags: 
 	- 职场
 	- 寓言

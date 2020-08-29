@@ -1,11 +1,14 @@
 ---
 title: From a junior to a senior
 date: 2020-05-23
+lang: en
 tags:
 	- English writing
 ---
 
 I'm a young developer. It's been three years since I started working. Over the last year, I've been asking myself what the difference is between the undergraduate, the junior, and the senior developer. In the latest one-to-one meeting with my manager, I kind of found the difference. The undergraduate developers learn new things. The juniors learn how to do things well. And the seniors focus on valuable things.  
+
+<!-- more -->
 
 When I was at university, I had to take lots of courses, do projects, and pass exams. There's no denying that I studied hard, but in fact, I have no idea whether the projects I did were useful or not in reality. I don't understand the true meanings of "composition over inheritance" that I wrote about in my exams. It looks like if you get higher grades than your classmates, you have done a better job. But that's definitely not the case. Undergraduate education follows a rule of "the more the better". You get higher grades because you implement an extra function in your project. However, it's really a bad design which makes the app difficult to use. While your classmate uses a design pattern to make the project more scalable, but it's not what your professor is looking for. Because of the lack of feedback, I don't know what's good and what's bad, so I can't improve my skill. 
 

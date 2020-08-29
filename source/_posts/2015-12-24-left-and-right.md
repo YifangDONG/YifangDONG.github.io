@@ -1,6 +1,7 @@
 ---
 title: 左与右
 date: 2015-12-24
+lang: zh-CN
 tags:
 	- 心得体会
 	- 日记

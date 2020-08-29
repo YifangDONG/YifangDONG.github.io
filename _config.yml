@@ -8,7 +8,9 @@ subtitle: '愿你始终拥有好奇之心'
 description: ''
 keywords: technique, travel, thinking
 author: Yifang DONG
-language: zh-CN
+language:
+  - zh-CN
+  - en
 timezone: Europe/Paris
 
 # URL

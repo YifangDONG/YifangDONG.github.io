@@ -1,6 +1,7 @@
 ---
 title: 魔术师准则
 date: 2018-06-22
+lang: zh-CN
 tags:
 	- 翻译
 	- 寓言

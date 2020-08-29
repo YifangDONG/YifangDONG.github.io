@@ -1,6 +1,7 @@
 ---
 title: 找寻生活节奏
 date: 2015-08-11
+lang: zh-CN
 tags:
 	- 日记
 	- 留学

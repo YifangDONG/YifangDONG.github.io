@@ -1,6 +1,7 @@
 ---
 title: Takeaways from code reading workshop
 date: 2020-07-12
+lang: en
 tags:
 	- English writing
 	- Java
@@ -8,6 +9,8 @@ tags:
 ---
 
 Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modules, so we only need to focus on a quite small scope of code. But what if we need to work on an unknown module. How to start and get the 80% most important information quickly. From the code reading workshop, we got the following tips:
+
+<!-- more -->
 
 ### Start from the functional description
 

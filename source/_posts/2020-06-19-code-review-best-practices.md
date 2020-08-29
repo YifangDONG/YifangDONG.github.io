@@ -1,12 +1,15 @@
 ---
 title: Code review best practices
 date: 2020-06-19
+lang: en
 tags: 
 	- English writing	
 	- 最佳实践
 ---
 
 As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review process. This blog is inspired by [five code review antipatterns](https://blogs.oracle.com/javamagazine/five-code-review-antipatterns)
+
+<!-- more -->
 
 ### Why is the team doing reviews?
 

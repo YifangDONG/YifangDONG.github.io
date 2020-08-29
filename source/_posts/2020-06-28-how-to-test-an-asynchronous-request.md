@@ -1,6 +1,7 @@
 ---
 title: How to test an asynchronous request
 date: 2020-06-28
+lang: en
 tags:
 	- English writing
 	- Java
@@ -89,6 +90,8 @@ Expected :hello
 Actual :null
 ```
 So what should I do for this test?
+
+<!-- more -->
 
 ### Solution1: Thread.sleep()
 

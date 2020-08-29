@@ -1,6 +1,7 @@
 ---
 title: la  rentrée
 date: 2015-09-17
+lang: zh-CN
 tags:
 	- 日记
 	- 留学
