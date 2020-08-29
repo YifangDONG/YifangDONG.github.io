@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN,en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -132,6 +132,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-switch_lang">
+
+    <a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>English</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -155,307 +160,12 @@
 
           <div class="content index posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/takeaways-from-code-reading-workshop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yifang DONG">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="萨朗儿的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/takeaways-from-code-reading-workshop/" class="post-title-link" itemprop="url">Takeaways from code reading workshop</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-07-12T00:00:00+02:00">2020-07-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modules, so we only need to focus on a quite small scope of code. But what if we need to work on an unknown module. How to start and get the 80% most important information quickly. From the code reading workshop, we got the following tips:</p>
-<h3 id="Start-from-the-functional-description"><a href="#Start-from-the-functional-description" class="headerlink" title="Start from the functional description"></a>Start from the functional description</h3><p>When we get a new module, the first thing is not to dive into the code, but to understand functionally speaking what’s the module used for. If it’s a UI module, manipulate a bit with the screen it creates. If it’s a domain module, understand the basic business logic it represents. If it’s a module for a certain process, comprehend the main steps of the process. We need to know what is the module used for before studying how the code achieves it.</p>
-<h3 id="Find-the-entry-point-class"><a href="#Find-the-entry-point-class" class="headerlink" title="Find the entry point class"></a>Find the entry point class</h3><p>The entry point class defines the boundary of the code. The entry point seems transparent when we work on a known project because usually we are not supposed to modify the entrance frequently. But to work on a project which we don’t have any knowledge, it’s always good to firstly find the entry point class. So that we can focus on code after and ignore all the code before the entry point class. Starting from that at least we know where to put our first debugger.</p>
-<h3 id="Ask-the-question-to-ourselves-How-the-code-decomposes"><a href="#Ask-the-question-to-ourselves-How-the-code-decomposes" class="headerlink" title="Ask the question to ourselves: How the code decomposes"></a>Ask the question to ourselves: How the code decomposes</h3><p>For the first analysis, there’s only one aim: to answer the question of how the code decomposes. Without a goal, we are easily attracted by some implementations and lost in the code jungle. The initial analysis should avoid going too deeply. Usually, the larger the codebase is, the shallower we should dig in it.</p>
-<p>Here are several approaches to discover the decomposition:</p>
-<h3 id="Glance-through-the-packages-to-have-a-general-image-of-the-module"><a href="#Glance-through-the-packages-to-have-a-general-image-of-the-module" class="headerlink" title="Glance through the packages to have a general image of the module"></a>Glance through the packages to have a general image of the module</h3><p>The package organization gives us a high-level decomposition clue. When we see a UI module that has packages named models, views, controllers, we can guess the module uses an MVC pattern. When we see a module that has packages named services, sessions, repositories, databases, we can find a layered relationship between them. Some packages use their domain languages as a name like queues, aggregates, filters, if we don’t know about the domain, it’s hard for us to figure out what it stands for. When we see some packages like tools, helpers, or utilities, we know we can skip them in the first analysis. However, sometimes we may find nothing senseful because of the ambiguity or evolution of the module.</p>
-<h3 id="Imports-are-helpful-to-discover-the-dependency"><a href="#Imports-are-helpful-to-discover-the-dependency" class="headerlink" title="Imports are helpful to discover the dependency"></a>Imports are helpful to discover the dependency</h3><p>By looking at the imports of each class, we can quickly build a dependency graph. From imports, we can analyze what are the internal and external dependencies. In a well-designed module, if a class has lots of external dependencies, it is normally a boundary class that should have little logic in it. From those classes, we can build the skeleton of the module. UML generated by IntelliJ can be an assistant to discover the dependency but if we are not careful about the direction to explore the dependency graph, it goes quickly to be very complex to read with classes and their arrows in all directions.</p>
-<h3 id="Get-more-information-from-interfaces-attributes-and-methods"><a href="#Get-more-information-from-interfaces-attributes-and-methods" class="headerlink" title="Get more information from interfaces, attributes, and methods"></a>Get more information from interfaces, attributes, and methods</h3><p>We go through interfaces to understand the main function. From attributes, we can see what is encapsulated. We can separate them by which is used for reading which is used for writing or is used for both. Or we can separate them by in which step it is used. Some times when the module is not well designed or it’s quite simple and small, the decomposition may be based on method rather than class. In this case, we need to dive into the method to analyze.  </p>
-<h3 id="Recognize-pattern-can-accelerate-analysis"><a href="#Recognize-pattern-can-accelerate-analysis" class="headerlink" title="Recognize pattern can accelerate analysis"></a>Recognize pattern can accelerate analysis</h3><p>When we find some patterns in some parts of the code, we can suppose what the rest of the code will do. In this situation, we are not reading the code, we just verify our hypothesis. We know where to go and what to look at, so we can analyze the code much quicker. This also means if we gathered lots of patterns in our head, we would read the code quicker.</p>
-<h3 id="Check-the-commit-history-if-we-find-something-strange"><a href="#Check-the-commit-history-if-we-find-something-strange" class="headerlink" title="Check the commit history if we find something strange"></a>Check the commit history if we find something strange</h3><p>Commit history gives us an idea about the code is new or old, it was modified frequently or it has rarely been modified since it was created. If we find some code is inconsistent with the context, we can check the commit history. If it’s in the same commit, maybe there is a hidden reason that we don’t know. If not, then the inconsistency may come from the developer thought differently with the previous one. We can also check the story description of this commit to know why the code was added like that if we want to go further.</p>
-<h3 id="Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code"><a href="#Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code" class="headerlink" title="Tests are useful when we want to understand a specific part of the code."></a>Tests are useful when we want to understand a specific part of the code.</h3><p>Sometimes tests are useful also. Unit tests can help us to understand a class, integration tests can help us to understand a whole business logic. Some tests are using the Given-When-Then style. They are executable documentation that gives us concrete examples of what is the expected behavior.</p>
-
-      
-    </div>
-
     
     
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/how-to-test-an-asynchronous-request/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yifang DONG">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="萨朗儿的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/how-to-test-an-asynchronous-request/" class="post-title-link" itemprop="url">How to test an asynchronous request</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-28 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-28T00:00:00+02:00">2020-06-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>One day, I need to write some offline integration tests for our server. To simplify, our server looks as follows: It contains two layers. The session layer subscribes to the server layer to be able to receive the notification. When the client requests something from the server, it will be notified later. What I should test is triggering an action from the client and then verify the notification. Here comes the problem, because each layer executes the notification in its <code>ExecutorService</code>, I don’t know when to check the notification from the client.</p>
-<p><img src="/images/test-asynchronous-request-describe-problem.png" alt="system under test"></p>
-<p>To simplify again, let’s say on the server-side I only have one layer called <code>MyServer</code> which can <code>addListener</code> and <code>doAction</code>:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onNotified</span> <span class="params">(String notification)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addListener</span><span class="params">(Listener listener)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyServer</span> <span class="keyword">implements</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    ExecutorService executor = Executors.newSingleThreadExecutor();</span><br><span class="line">    <span class="keyword">volatile</span> Optional&lt;Listener&gt; listener = Optional.empty();</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Image here are some complex domain logic</span></span><br><span class="line">        listener.ifPresent(listener -&gt;</span><br><span class="line">            executor.submit(() -&gt; listener.onNotified(action))</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addListener</span><span class="params">(Listener listener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.listener = Optional.of(listener);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>I create a client to test <code>MyServer</code>. It implements the interface <code>Listener</code> which can subscribe to a server, call the server to do an action, and get notified.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> <span class="keyword">implements</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">    String lastNotification;</span><br><span class="line">    Server server;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotified</span><span class="params">(String notification)</span> </span>&#123;</span><br><span class="line">        lastNotification = notification;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(Server server)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server = server;</span><br><span class="line">        <span class="keyword">this</span>.server.addListener(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLastNotification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lastNotification;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span> </span>&#123;</span><br><span class="line">        server.doAction(action);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>The test is simple: when the client called <code>doAction(&quot;Hello&quot;)</code>, I want to check it is notified by “Hello”</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">theBasicTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Client client = <span class="keyword">new</span> Client();</span><br><span class="line">    Server myServer = <span class="keyword">new</span> MyServer();</span><br><span class="line">    client.subscribe(myServer);</span><br><span class="line">    client.doAction(<span class="string">"hello"</span>);</span><br><span class="line">    assertEquals(<span class="string">"hello"</span>, client.getLastNotification());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>If I run the test directly, I will get the error:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.AssertionError:</span><br><span class="line">Expected :hello</span><br><span class="line">Actual :null</span><br></pre></td></tr></table></figure>
-<p>So what should I do for this test?</p>
-<h3 id="Solution1-Thread-sleep"><a href="#Solution1-Thread-sleep" class="headerlink" title="Solution1: Thread.sleep()"></a>Solution1: Thread.sleep()</h3><p><code>client.getLastNotification()</code> return null because that <code>client.doAction(&quot;hello&quot;)</code> and <code>assertEquals(&quot;hello&quot;, client.getLastNotification())</code> are executed in the main thread while the server notifies the client in another thread. So when <code>assertEquals</code> is called, the server hasn’t notified the client yet. The solution looks simple, I just need to wait a certain time before doing the assertion to let the server have enough time to notify the client. Just like this:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">solution_ThreadSleep</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Client client = <span class="keyword">new</span> Client();</span><br><span class="line">    Server myServer = <span class="keyword">new</span> MyServer();</span><br><span class="line">    client.subscribe(myServer);</span><br><span class="line">    client.doAction(<span class="string">"hello"</span>);</span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">    assertEquals(<span class="string">"hello"</span>, client.getLastNotification());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>It’s the simplest solution but the disadvantage is also evident. I don’t know perfectly how long should I wait. Imagine I have dozens of or even hundreds of tests like that I don’t want to wait for a half-hour to run all the tests. On the other hand, I can’t put a small-time slot just enough to pass the test on my local machines. Because the machines have different powers. It’s enough for mine does not mean it’s enough for others. Even worse, the waiting time is enough when the machine is free doesn’t mean it’s enough when it’s busy. That also the main reason for the random test failure. I need to find a more stable solution. </p>
-<h3 id="Solution2-CountDownLatch"><a href="#Solution2-CountDownLatch" class="headerlink" title="Solution2: CountDownLatch"></a>Solution2: CountDownLatch</h3><p>I need to find a solution that allows the client to synchronize <code>doAction</code>, <code>onNotified</code> and <code>getLastNotification</code>. Fortunately, I have a perfect helper in the <code>java.util.concurrent</code> package: the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html" target="_blank" rel="noopener">CountDownLatcher </a>class.</p>
-<blockquote>
-<p>A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.</p>
-</blockquote>
-<p>What I want is when the main thread called <code>getLastNotification</code>, it waits until the <code>onNotified</code> from another thread is called.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> <span class="keyword">implements</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">    String lastNotification;</span><br><span class="line">    Server server;</span><br><span class="line">    CountDownLatch countDownLatch;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotified</span><span class="params">(String notification)</span> </span>&#123;</span><br><span class="line">        lastNotification = notification;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(Server server)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server = server;</span><br><span class="line">        <span class="keyword">this</span>.server.addListener(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLastNotification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        countDownLatch.await(<span class="number">10</span>, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">return</span> lastNotification;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span> </span>&#123;</span><br><span class="line">        countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</span><br><span class="line">        server.doAction(action);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>I initialize the countDownLatch with a count 1 when <code>doAction</code> is called. In <code>getLastNotification</code> the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html#await()" target="_blank" rel="noopener"><code>await</code></a> method blocks until the current count reaches zero. The count reaches zero due to the invocation of the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html#countDown()" target="_blank" rel="noopener"><code>countDown()</code></a> method in <code>onNotified</code></p>
-<h3 id="Solution3-CompletableFuture"><a href="#Solution3-CompletableFuture" class="headerlink" title="Solution3: CompletableFuture"></a>Solution3: CompletableFuture</h3><p>If I think about the problem slightly differently, I can find another solution. I don’t need to block the main thread when I try to call <code>getLastNotification</code>. I just need to retrieve the value of the last notification. In other words, the main thread can still do whatever it wants. Another class in the <code>java.util.concurrent</code> package, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html" target="_blank" rel="noopener">CompletableFuture</a>, can help me to achieve that.</p>
-<blockquote>
-<p>A <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Future.html" target="_blank" rel="noopener"><code>Future</code></a> that may be explicitly completed (setting its value and status), and may be used as a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" target="_blank" rel="noopener"><code>CompletionStage</code></a>, supporting dependent functions and actions that trigger upon its completion.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> <span class="keyword">implements</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">    CompletableFuture&lt;String&gt; lastNotification;</span><br><span class="line">    Server server;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotified</span><span class="params">(String notification)</span> </span>&#123;</span><br><span class="line">        lastNotification.complete(notification);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(Server server)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server = server;</span><br><span class="line">        <span class="keyword">this</span>.server.addListener(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLastNotification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lastNotification.get(<span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span> </span>&#123;</span><br><span class="line">        lastNotification = <span class="keyword">new</span> CompletableFuture&lt;&gt;();</span><br><span class="line">        server.doAction(action);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>The implementation is quite similar to the <code>CountDownLatch</code> one. When the client calls <code>doAction</code>, I create a <code>CompletableFuture</code> <code>lastNotification</code> which represents a task that can be used to get its value in the future. The task is waiting for the notification. When the client is notified, I set the result to the <code>lastNotification</code> by using the method <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html#complete(T)" target="_blank" rel="noopener">complete</a>. In the <code>getLastNotification</code>, I use the method <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html#get(long,java.util.concurrent.TimeUnit)" target="_blank" rel="noopener">get</a> to get the result of the <code>CompletableFuture</code>. Indeed I don’t benefit a lot by this powerful class <code>CompletableFuture</code> because when I get the value from <code>lastNotification</code>, it’s already a blocking call. The power of the <code>CompletableFuture</code> is that we can create a chain of several tasks that will be executed synchronously or asynchronously in a default thread or a dedicated thread.</p>
-<h3 id="Final-Solution-Rethink-about-the-design"><a href="#Final-Solution-Rethink-about-the-design" class="headerlink" title="Final Solution: Rethink about the design"></a>Final Solution: Rethink about the design</h3><p>I’m always happy when I’ve found a solution to deal with a problem especially when the problem seems difficult. But finding a solution is not the end, I need to ask myself why I have to face this annoying problem. Because sometimes, the true problem is hidden behind the symptom.</p>
-<blockquote>
-<p>A: “Why we should deal with this asynchronous problem while we just want to test our functional logic.”</p>
-<p>B: “Because we have a separate thread to execute notification.”</p>
-<p>A: “Why we need this separate thread?”</p>
-<p>B: “Because in reality, the notification takes time. In the production code, the server should notify dozens of subscribed clients and we want to have a good performance for that. “</p>
-<p>A: “But in the test, we don’t care about the performance, right? We only care about the functional logic is correct or not.”</p>
-<p>B: “Yes, exactly,”</p>
-<p>A: “So what should we do?”</p>
-<p>B: “Maybe re-design MyServer to be able to have different behavior between the production context and the test context. Well…I should be able to inject this ExecutorService.”</p>
-<p>A: “Bingo!”</p>
-</blockquote>
-<p>After rethinking the problem, I can find another solution to deal with this problem: Inject the <code>ExecutorService</code> into <code>MyServer</code> to avoid dealing with the asynchronous problem.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onNotified</span> <span class="params">(String notification)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addListener</span><span class="params">(Listener listener)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyServer</span> <span class="keyword">implements</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">    ExecutorService executor;</span><br><span class="line">    <span class="keyword">volatile</span> Optional&lt;Listener&gt; listener = Optional.empty();</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyServer</span><span class="params">(ExecutorService executor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.executor = executor;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAction</span><span class="params">(String action)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Image here are some complex domain logic</span></span><br><span class="line">        listener.ifPresent(listener -&gt;</span><br><span class="line">            executor.submit(() -&gt; listener.onNotified(action))</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addListener</span><span class="params">(Listener listener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.listener = Optional.of(listener);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">solution_RedesignTheServer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Client client = <span class="keyword">new</span> Client();</span><br><span class="line">    Server myServer = <span class="keyword">new</span> MyServer(MoreExecutors.newDirectExecutorService());</span><br><span class="line">    client.subscribe(myServer);</span><br><span class="line">    client.doAction(<span class="string">"hello"</span>);</span><br><span class="line">    assertEquals(<span class="string">"hello"</span>, client.getLastNotification());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://guava.dev/releases/23.5-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService--" target="_blank" rel="noopener">MoreExecutors</a> is a <a href="https://github.com/google/guava/wiki" target="_blank" rel="noopener">guava</a> utility. <a href="https://guava.dev/releases/23.5-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService--" target="_blank" rel="noopener">MoreExecutors.newDirectExecutorService()</a> tells <code>MyServer</code> to execute the task in the calling thread, which is the main thread. Now in the test, there’s only one thread. I don’t need to deal with the asynchronous problem.</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>As a Java developer, I should know how to use classes like <code>CountDownLatch</code>, <code>CompletableFuture</code>, <code>ExecutorService</code> to deal with asynchronous. In this blog, I use a simplified use case to show how to use them. On the other hand, we can see asynchronous is not simple, sometimes with another design, we can avoid dealing with it.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/code-review-best-practices/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yifang DONG">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="萨朗儿的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/code-review-best-practices/" class="post-title-link" itemprop="url">Code review best practices</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-19T00:00:00+02:00">2020-06-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review process. This blog is inspired by <a href="https://blogs.oracle.com/javamagazine/five-code-review-antipatterns" target="_blank" rel="noopener">five code review antipatterns</a></p>
-<h3 id="Why-is-the-team-doing-reviews"><a href="#Why-is-the-team-doing-reviews" class="headerlink" title="Why is the team doing reviews?"></a>Why is the team doing reviews?</h3><p>There are several reasons we do the code review. The most common one is to ensure the code readability and verify the implementation matches the requirement. That’s also the simplest type of reviews for both reviewers and developers as our team agrees on what clean code looks like. The second reason is to review the design. Design reviews always take time as we always have lively debates, so when a developer thinks he needs a design review, he should ask for the code review as early as possible. Last but not least, the code review also serves to share knowledge. When developers have free time, they can review their coworkers’ code and thus keep up with what they have done so far.</p>
-<h3 id="What-are-team-members-looking-for"><a href="#What-are-team-members-looking-for" class="headerlink" title="What are team members looking for?"></a>What are team members looking for?</h3><p>The purpose of code review is to ensure code readability. We are looking to see if naming is ambiguous, if the method is decomposed illogically, or if the code is prone to errors.  We always use <em>Effective Java</em> as a reference for the review. For the design review, there’s no one standard to follow, because the code design is usually a question of how to make trade-offs. There’s no one perfect design. We can only make a good enough design. </p>
-<h3 id="Who-is-involved"><a href="#Who-is-involved" class="headerlink" title="Who is involved?"></a>Who is involved?</h3><p>Everyone should review the code, no matter if he is junior or senior. The code can also be reviewed by several people. But we need one assigned reviewer who is responsible for saying when the code is good enough to submit. This ensures that every code review has an owner to push to completion. When reviewers and developers have different opinions, an expert can be involved to make a final decision. </p>
-<h3 id="When-does-the-team-do-reviews"><a href="#When-does-the-team-do-reviews" class="headerlink" title="When does the team do reviews?"></a>When does the team do reviews?</h3><p>Usually, reviews are required when the developer finishes his coding. It’s a waste of time for a reviewer to review unfinished work. However, when many modules need to be modified, the developer should do a progressive review. Once part of the development is finished, he can ask for a review. As mentioned before, the design review should be initiated as early as possible to avoid having to redo the entire development. As for the knowledge sharing review, it can happen anytime. For example, when I come back from vacation or switch to another project, I can review the submitted code to catch up on the evolution of the project.</p>
-<h3 id="Where-does-the-team-do-reviews"><a href="#Where-does-the-team-do-reviews" class="headerlink" title="Where does the team do reviews?"></a>Where does the team do reviews?</h3><p>We use Swarm as a review tool. It provides some functions such as comparing the difference between two versions and notifying the developer once a comment is added or the review status is changed. We can also configure the rules such as the code with at least one vote-up can merge to the main branch. Comparing with Git Pull-Request, Swarm doesn’t integrate well with the Jenkins pipeline.</p>
-<p>Swarm is used for reviewers to add comments. Some might be a task to fix, others are open questions for better design or requests for information. When there are many small tasks added during the review, to avoid excessive back and forth, the developer and reviewer will work through the source code together.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/from-junior-to-senior-en/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yifang DONG">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="萨朗儿的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/from-junior-to-senior-en/" class="post-title-link" itemprop="url">From a junior to a senior</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-23 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-23T00:00:00+02:00">2020-05-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>I’m a young developer. It’s been three years since I started working. Over the last year, I’ve been asking myself what the difference is between the undergraduate, the junior, and the senior developer. In the latest one-to-one meeting with my manager, I kind of found the difference. The undergraduate developers learn new things. The juniors learn how to do things well. And the seniors focus on valuable things.  </p>
-<p>When I was at university, I had to take lots of courses, do projects, and pass exams. There’s no denying that I studied hard, but in fact, I have no idea whether the projects I did were useful or not in reality. I don’t understand the true meanings of “composition over inheritance” that I wrote about in my exams. It looks like if you get higher grades than your classmates, you have done a better job. But that’s definitely not the case. Undergraduate education follows a rule of “the more the better”. You get higher grades because you implement an extra function in your project. However, it’s really a bad design which makes the app difficult to use. While your classmate uses a design pattern to make the project more scalable, but it’s not what your professor is looking for. Because of the lack of feedback, I don’t know what’s good and what’s bad, so I can’t improve my skill. </p>
-<p>When I started to work for a company, the first lesson I learned was that there were no more one-shot projects. The code you add to the project may be modified after one month, one year or even ten years later. So your code must follow some standards and be of good quality. I have improved my code quality from the feedback of the code review. I have learned how to make a trade-off by discussing different solutions with my colleagues. As a junior, I try my best to deliver each feature assigned to me to a good standard, but I never think about why I need to implement this function, or what the value of it is.</p>
-<p>At our last one-to-one meeting, my manager told me he is preparing a big feature for our team to work on for the next four months. He explained a bit about the context. In the end, he said that he needed to do some research on the feasibility and the cost to see if it’s worth doing. I realized when I was working on each small feature, bug fix, or assigned task, that my manager was thinking about the evolution of the project, and which potential direction would add the most value.</p>
-<p>It’s not easy to assess the value of a feature, which may vary depending on experience, knowledge, and taste. I am gaining valuable experience in learning how to do this well. When I am assigned a feature, I can discuss it with the product manager. We can talk about the context and why the client needs it. So, I can understand the value of the feature. When organizing a workshop, I should ask the participants for feedback on which part is useful for them and have a discussion about any parts that are not. So next time I can focus more on the valuable parts. By focusing on delivering the most valuable product, I will have enough time to do things properly.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -520,7 +230,9 @@
   
   
 
-      
+	
+    
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -603,7 +315,9 @@
   
   
 
-      
+	
+    
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -663,7 +377,9 @@
   
   
 
-      
+	
+    
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -787,7 +503,9 @@
   
   
 
-      
+	
+    
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -919,7 +637,9 @@
   
   
 
-      
+	
+    
+        
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -1027,6 +747,7 @@
   
   
 
+	
 
   
   <nav class="pagination">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN,en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -26,12 +26,12 @@
 <meta property="og:url" content="http://yoursite.com/takeaways-from-code-reading-workshop/index.html">
 <meta property="og:site_name" content="萨朗儿的博客">
 <meta property="og:description" content="Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modu">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-11T22:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-12T08:50:37.026Z">
+<meta property="article:modified_time" content="2020-08-29T14:57:39.658Z">
 <meta property="article:author" content="Yifang DONG">
-<meta property="article:tag" content="English writing">
 <meta property="article:tag" content="Java">
+<meta property="article:tag" content="English writing">
 <meta property="article:tag" content="最佳实践">
 <meta name="twitter:card" content="summary">
 
@@ -44,7 +44,7 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'zh-CN'
+    lang   : 'en'
   };
 </script>
 
@@ -88,7 +88,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -118,22 +118,27 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-switch_lang">
+
+    <a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>中文版</a>
 
   </li>
   </ul>
@@ -163,7 +168,7 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/takeaways-from-code-reading-workshop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,9 +190,9 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="创建时间：2020-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-07-12T00:00:00+02:00">2020-07-12</time>
+              <time title="Created: 2020-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-07-12T00:00:00+02:00">2020-07-12</time>
             </span>
 
           
@@ -202,6 +207,8 @@
 
       
         <p>Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modules, so we only need to focus on a quite small scope of code. But what if we need to work on an unknown module. How to start and get the 80% most important information quickly. From the code reading workshop, we got the following tips:</p>
+<a id="more"></a>
+
 <h3 id="Start-from-the-functional-description"><a href="#Start-from-the-functional-description" class="headerlink" title="Start from the functional description"></a>Start from the functional description</h3><p>When we get a new module, the first thing is not to dive into the code, but to understand functionally speaking what’s the module used for. If it’s a UI module, manipulate a bit with the screen it creates. If it’s a domain module, understand the basic business logic it represents. If it’s a module for a certain process, comprehend the main steps of the process. We need to know what is the module used for before studying how the code achieves it.</p>
 <h3 id="Find-the-entry-point-class"><a href="#Find-the-entry-point-class" class="headerlink" title="Find the entry point class"></a>Find the entry point class</h3><p>The entry point class defines the boundary of the code. The entry point seems transparent when we work on a known project because usually we are not supposed to modify the entrance frequently. But to work on a project which we don’t have any knowledge, it’s always good to firstly find the entry point class. So that we can focus on code after and ignore all the code before the entry point class. Starting from that at least we know where to put our first debugger.</p>
 <h3 id="Ask-the-question-to-ourselves-How-the-code-decomposes"><a href="#Ask-the-question-to-ourselves-How-the-code-decomposes" class="headerlink" title="Ask the question to ourselves: How the code decomposes"></a>Ask the question to ourselves: How the code decomposes</h3><p>For the first analysis, there’s only one aim: to answer the question of how the code decomposes. Without a goal, we are easily attracted by some implementations and lost in the code jungle. The initial analysis should avoid going too deeply. Usually, the larger the codebase is, the shallower we should dig in it.</p>
@@ -221,8 +228,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/English-writing/" rel="tag"># English writing</a>
               <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
               <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag"># 最佳实践</a>
           </div>
 
@@ -285,10 +292,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          文章目录
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          站点概览
+          Overview
         </li>
       </ul>
 
@@ -309,14 +316,14 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">16</span>
-          <span class="site-state-item-name">日志</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
         <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">标签</span></a>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -356,7 +363,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         
