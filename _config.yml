@@ -101,6 +101,6 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/YifangDONG/YifangDONG.github.io.git
+  repo: git@github.com:YifangDONG/YifangDONG.github.io.git
   branch: master
 
