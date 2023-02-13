@@ -1,5 +1,5 @@
 ---
-title: A Journey Of JavaPath Coding Kata
+title: A Journey of JavaPath Coding Kata
 date: 2021-12-20 
 lang: en
 tags:
