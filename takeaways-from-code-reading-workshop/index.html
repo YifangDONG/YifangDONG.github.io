@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:300,300italic,400,400italic,700,700italic%7CZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic%7CRoboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Takeaways from code reading workshop">
+<meta property="og:url" content="http://yoursite.com/takeaways-from-code-reading-workshop/index.html">
+<meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-11T22:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-15T09:53:09.389Z">
+<meta property="article:author" content="Yifang DONG">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="English writing">
+<meta property="article:tag" content="最佳实践">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/takeaways-from-code-reading-workshop/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/takeaways-from-code-reading-workshop/","path":"takeaways-from-code-reading-workshop/","title":"Takeaways from code reading workshop"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Takeaways from code reading workshop | 萨朗儿的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">萨朗儿的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">愿你始终拥有好奇之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-english"><a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>english</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-from-the-functional-description"><span class="nav-number">1.</span> <span class="nav-text">Start from the functional description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Find-the-entry-point-class"><span class="nav-number">2.</span> <span class="nav-text">Find the entry point class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ask-the-question-to-ourselves-How-the-code-decomposes"><span class="nav-number">3.</span> <span class="nav-text">Ask the question to ourselves: How the code decomposes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Glance-through-the-packages-to-have-a-general-image-of-the-module"><span class="nav-number">4.</span> <span class="nav-text">Glance through the packages to have a general image of the module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Imports-are-helpful-to-discover-the-dependency"><span class="nav-number">5.</span> <span class="nav-text">Imports are helpful to discover the dependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Get-more-information-from-interfaces-attributes-and-methods"><span class="nav-number">6.</span> <span class="nav-text">Get more information from interfaces, attributes, and methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Recognize-pattern-can-accelerate-analysis"><span class="nav-number">7.</span> <span class="nav-text">Recognize pattern can accelerate analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-the-commit-history-if-we-find-something-strange"><span class="nav-number">8.</span> <span class="nav-text">Check the commit history if we find something strange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code"><span class="nav-number">9.</span> <span class="nav-text">Tests are useful when we want to understand a specific part of the code.</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yifang DONG</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YifangDONG" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YifangDONG" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:samantha12dong@gmail.com" title="E-Mail → mailto:samantha12dong@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/D_YIF" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;D_YIF" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/takeaways-from-code-reading-workshop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Takeaways from code reading workshop | 萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Takeaways from code reading workshop
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2020-07-12T00:00:00+02:00">2020-07-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Reading code is essential for a developer. We need to understand the current code to add new features, find bugs, or do refactoring. Most of the time we are working and reworking on some familiar modules, so we only need to focus on a quite small scope of code. But what if we need to work on an unknown module. How to start and get the 80% most important information quickly. From the code reading workshop, we got the following tips:</p>
+<span id="more"></span>
+
+<h3 id="Start-from-the-functional-description"><a href="#Start-from-the-functional-description" class="headerlink" title="Start from the functional description"></a>Start from the functional description</h3><p>When we get a new module, the first thing is not to dive into the code, but to understand functionally speaking what’s the module used for. If it’s a UI module, manipulate a bit with the screen it creates. If it’s a domain module, understand the basic business logic it represents. If it’s a module for a certain process, comprehend the main steps of the process. We need to know what is the module used for before studying how the code achieves it.</p>
+<h3 id="Find-the-entry-point-class"><a href="#Find-the-entry-point-class" class="headerlink" title="Find the entry point class"></a>Find the entry point class</h3><p>The entry point class defines the boundary of the code. The entry point seems transparent when we work on a known project because usually we are not supposed to modify the entrance frequently. But to work on a project which we don’t have any knowledge, it’s always good to firstly find the entry point class. So that we can focus on code after and ignore all the code before the entry point class. Starting from that at least we know where to put our first debugger.</p>
+<h3 id="Ask-the-question-to-ourselves-How-the-code-decomposes"><a href="#Ask-the-question-to-ourselves-How-the-code-decomposes" class="headerlink" title="Ask the question to ourselves: How the code decomposes"></a>Ask the question to ourselves: How the code decomposes</h3><p>For the first analysis, there’s only one aim: to answer the question of how the code decomposes. Without a goal, we are easily attracted by some implementations and lost in the code jungle. The initial analysis should avoid going too deeply. Usually, the larger the codebase is, the shallower we should dig in it.</p>
+<p>Here are several approaches to discover the decomposition:</p>
+<h3 id="Glance-through-the-packages-to-have-a-general-image-of-the-module"><a href="#Glance-through-the-packages-to-have-a-general-image-of-the-module" class="headerlink" title="Glance through the packages to have a general image of the module"></a>Glance through the packages to have a general image of the module</h3><p>The package organization gives us a high-level decomposition clue. When we see a UI module that has packages named models, views, controllers, we can guess the module uses an MVC pattern. When we see a module that has packages named services, sessions, repositories, databases, we can find a layered relationship between them. Some packages use their domain languages as a name like queues, aggregates, filters, if we don’t know about the domain, it’s hard for us to figure out what it stands for. When we see some packages like tools, helpers, or utilities, we know we can skip them in the first analysis. However, sometimes we may find nothing senseful because of the ambiguity or evolution of the module.</p>
+<h3 id="Imports-are-helpful-to-discover-the-dependency"><a href="#Imports-are-helpful-to-discover-the-dependency" class="headerlink" title="Imports are helpful to discover the dependency"></a>Imports are helpful to discover the dependency</h3><p>By looking at the imports of each class, we can quickly build a dependency graph. From imports, we can analyze what are the internal and external dependencies. In a well-designed module, if a class has lots of external dependencies, it is normally a boundary class that should have little logic in it. From those classes, we can build the skeleton of the module. UML generated by IntelliJ can be an assistant to discover the dependency but if we are not careful about the direction to explore the dependency graph, it goes quickly to be very complex to read with classes and their arrows in all directions.</p>
+<h3 id="Get-more-information-from-interfaces-attributes-and-methods"><a href="#Get-more-information-from-interfaces-attributes-and-methods" class="headerlink" title="Get more information from interfaces, attributes, and methods"></a>Get more information from interfaces, attributes, and methods</h3><p>We go through interfaces to understand the main function. From attributes, we can see what is encapsulated. We can separate them by which is used for reading which is used for writing or is used for both. Or we can separate them by in which step it is used. Some times when the module is not well designed or it’s quite simple and small, the decomposition may be based on method rather than class. In this case, we need to dive into the method to analyze.  </p>
+<h3 id="Recognize-pattern-can-accelerate-analysis"><a href="#Recognize-pattern-can-accelerate-analysis" class="headerlink" title="Recognize pattern can accelerate analysis"></a>Recognize pattern can accelerate analysis</h3><p>When we find some patterns in some parts of the code, we can suppose what the rest of the code will do. In this situation, we are not reading the code, we just verify our hypothesis. We know where to go and what to look at, so we can analyze the code much quicker. This also means if we gathered lots of patterns in our head, we would read the code quicker.</p>
+<h3 id="Check-the-commit-history-if-we-find-something-strange"><a href="#Check-the-commit-history-if-we-find-something-strange" class="headerlink" title="Check the commit history if we find something strange"></a>Check the commit history if we find something strange</h3><p>Commit history gives us an idea about the code is new or old, it was modified frequently or it has rarely been modified since it was created. If we find some code is inconsistent with the context, we can check the commit history. If it’s in the same commit, maybe there is a hidden reason that we don’t know. If not, then the inconsistency may come from the developer thought differently with the previous one. We can also check the story description of this commit to know why the code was added like that if we want to go further.</p>
+<h3 id="Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code"><a href="#Tests-are-useful-when-we-want-to-understand-a-specific-part-of-the-code" class="headerlink" title="Tests are useful when we want to understand a specific part of the code."></a>Tests are useful when we want to understand a specific part of the code.</h3><p>Sometimes tests are useful also. Unit tests can help us to understand a class, integration tests can help us to understand a whole business logic. Some tests are using the Given-When-Then style. They are executable documentation that gives us concrete examples of what is the expected behavior.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
+              <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag"># 最佳实践</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/how-to-test-an-asynchronous-request/" rel="prev" title="How to test an asynchronous request">
+                  <i class="fa fa-angle-left"></i> How to test an asynchronous request
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020-feedback/" rel="next" title="2020 Feedback">
+                  2020 Feedback <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/takeaways-from-code-reading-workshop/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/takeaways-from-code-reading-workshop/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

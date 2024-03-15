@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:300,300italic,400,400italic,700,700italic%7CZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic%7CRoboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="One day, I need to write some offline integration tests for our server. To simplify, our server looks as follows: It contains two layers. The session layer subscribes to the server layer to be able to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to test an asynchronous request">
+<meta property="og:url" content="http://yoursite.com/en/how-to-test-an-asynchronous-request/index.html">
+<meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="One day, I need to write some offline integration tests for our server. To simplify, our server looks as follows: It contains two layers. The session layer subscribes to the server layer to be able to">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/test-asynchronous-request-describe-problem.png">
+<meta property="article:published_time" content="2020-06-27T22:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-15T09:53:09.388Z">
+<meta property="article:author" content="Yifang DONG">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="English writing">
+<meta property="article:tag" content="测试">
+<meta property="article:tag" content="Concurrency">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/test-asynchronous-request-describe-problem.png">
+
+
+<link rel="canonical" href="http://yoursite.com/en/how-to-test-an-asynchronous-request/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/how-to-test-an-asynchronous-request/","path":"en/how-to-test-an-asynchronous-request/","title":"How to test an asynchronous request"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>How to test an asynchronous request | 萨朗儿的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">萨朗儿的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">愿你始终拥有好奇之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-english"><a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>english</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution1-Thread-sleep"><span class="nav-number">1.</span> <span class="nav-text">Solution1: Thread.sleep()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution2-CountDownLatch"><span class="nav-number">2.</span> <span class="nav-text">Solution2: CountDownLatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution3-CompletableFuture"><span class="nav-number">3.</span> <span class="nav-text">Solution3: CompletableFuture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Final-Solution-Rethink-about-the-design"><span class="nav-number">4.</span> <span class="nav-text">Final Solution: Rethink about the design</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yifang DONG</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YifangDONG" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YifangDONG" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:samantha12dong@gmail.com" title="E-Mail → mailto:samantha12dong@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/D_YIF" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;D_YIF" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/how-to-test-an-asynchronous-request/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="How to test an asynchronous request | 萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How to test an asynchronous request
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-28 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-28T00:00:00+02:00">2020-06-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>One day, I need to write some offline integration tests for our server. To simplify, our server looks as follows: It contains two layers. The session layer subscribes to the server layer to be able to receive the notification. When the client requests something from the server, it will be notified later. What I should test is triggering an action from the client and then verify the notification. Here comes the problem, because each layer executes the notification in its <code>ExecutorService</code>, I don’t know when to check the notification from the client.</p>
+<p><img src="/images/test-asynchronous-request-describe-problem.png" alt="system under test"></p>
+<p>To simplify again, let’s say on the server-side I only have one layer called <code>MyServer</code> which can <code>addListener</code> and <code>doAction</code>:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">interface</span> <span class="token class-name">Listener</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> onNotified <span class="token punctuation">(</span><span class="token class-name">String</span> notification<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">interface</span> <span class="token class-name">Server</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> <span class="token function">addListener</span><span class="token punctuation">(</span><span class="token class-name">Listener</span> listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+     
+<span class="token keyword">class</span> <span class="token class-name">MyServer</span> <span class="token keyword">implements</span> <span class="token class-name">Server</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">ExecutorService</span> executor <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">volatile</span> <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Listener</span><span class="token punctuation">></span></span> listener <span class="token operator">=</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Image here are some complex domain logic</span>
+        listener<span class="token punctuation">.</span><span class="token function">ifPresent</span><span class="token punctuation">(</span>listener <span class="token operator">-></span>
+            executor<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> listener<span class="token punctuation">.</span><span class="token function">onNotified</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+     
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addListener</span><span class="token punctuation">(</span><span class="token class-name">Listener</span> listener<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>listener <span class="token operator">=</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>I create a client to test <code>MyServer</code>. It implements the interface <code>Listener</code> which can subscribe to a server, call the server to do an action, and get notified.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">implements</span> <span class="token class-name">Listener</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> lastNotification<span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> server<span class="token punctuation">;</span>
+ 
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNotified</span><span class="token punctuation">(</span><span class="token class-name">String</span> notification<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        lastNotification <span class="token operator">=</span> notification<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">Server</span> server<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server <span class="token operator">=</span> server<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server<span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> lastNotification<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        server<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>The test is simple: when the client called <code>doAction(&quot;Hello&quot;)</code>, I want to check it is notified by “Hello”</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">theBasicTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Client</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> myServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>myServer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> client<span class="token punctuation">.</span><span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>If I run the test directly, I will get the error:</p>
+<pre class="line-numbers language-none"><code class="language-none">java.lang.AssertionError:
+Expected :hello
+Actual :null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>So what should I do for this test?</p>
+<span id="more"></span>
+
+<h3 id="Solution1-Thread-sleep"><a href="#Solution1-Thread-sleep" class="headerlink" title="Solution1: Thread.sleep()"></a>Solution1: Thread.sleep()</h3><p><code>client.getLastNotification()</code> return null because that <code>client.doAction(&quot;hello&quot;)</code> and <code>assertEquals(&quot;hello&quot;, client.getLastNotification())</code> are executed in the main thread while the server notifies the client in another thread. So when <code>assertEquals</code> is called, the server hasn’t notified the client yet. The solution looks simple, I just need to wait a certain time before doing the assertion to let the server have enough time to notify the client. Just like this:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">solution_ThreadSleep</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Client</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> myServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>myServer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> client<span class="token punctuation">.</span><span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>It’s the simplest solution but the disadvantage is also evident. I don’t know perfectly how long should I wait. Imagine I have dozens of or even hundreds of tests like that I don’t want to wait for a half-hour to run all the tests. On the other hand, I can’t put a small-time slot just enough to pass the test on my local machines. Because the machines have different powers. It’s enough for mine does not mean it’s enough for others. Even worse, the waiting time is enough when the machine is free doesn’t mean it’s enough when it’s busy. That also the main reason for the random test failure. I need to find a more stable solution. </p>
+<h3 id="Solution2-CountDownLatch"><a href="#Solution2-CountDownLatch" class="headerlink" title="Solution2: CountDownLatch"></a>Solution2: CountDownLatch</h3><p>I need to find a solution that allows the client to synchronize <code>doAction</code>, <code>onNotified</code> and <code>getLastNotification</code>. Fortunately, I have a perfect helper in the <code>java.util.concurrent</code> package: the <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html">CountDownLatcher </a>class.</p>
+<blockquote>
+<p>A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.</p>
+</blockquote>
+<p>What I want is when the main thread called <code>getLastNotification</code>, it waits until the <code>onNotified</code> from another thread is called.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">implements</span> <span class="token class-name">Listener</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> lastNotification<span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> server<span class="token punctuation">;</span>
+    <span class="token class-name">CountDownLatch</span> countDownLatch<span class="token punctuation">;</span>
+ 
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNotified</span><span class="token punctuation">(</span><span class="token class-name">String</span> notification<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        lastNotification <span class="token operator">=</span> notification<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">Server</span> server<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server <span class="token operator">=</span> server<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server<span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        countDownLatch<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span><span class="token constant">SECONDS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> lastNotification<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        countDownLatch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        server<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>I initialize the countDownLatch with a count 1 when <code>doAction</code> is called. In <code>getLastNotification</code> the <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html#await()"><code>await</code></a> method blocks until the current count reaches zero. The count reaches zero due to the invocation of the <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CountDownLatch.html#countDown()"><code>countDown()</code></a> method in <code>onNotified</code></p>
+<h3 id="Solution3-CompletableFuture"><a href="#Solution3-CompletableFuture" class="headerlink" title="Solution3: CompletableFuture"></a>Solution3: CompletableFuture</h3><p>If I think about the problem slightly differently, I can find another solution. I don’t need to block the main thread when I try to call <code>getLastNotification</code>. I just need to retrieve the value of the last notification. In other words, the main thread can still do whatever it wants. Another class in the <code>java.util.concurrent</code> package, <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html">CompletableFuture</a>, can help me to achieve that.</p>
+<blockquote>
+<p>A <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Future.html"><code>Future</code></a> that may be explicitly completed (setting its value and status), and may be used as a <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html"><code>CompletionStage</code></a>, supporting dependent functions and actions that trigger upon its completion.</p>
+</blockquote>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">implements</span> <span class="token class-name">Listener</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">CompletableFuture</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> lastNotification<span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> server<span class="token punctuation">;</span>
+ 
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNotified</span><span class="token punctuation">(</span><span class="token class-name">String</span> notification<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        lastNotification<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span>notification<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">Server</span> server<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server <span class="token operator">=</span> server<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>server<span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> lastNotification<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span><span class="token constant">SECONDS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        lastNotification <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CompletableFuture</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        server<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>The implementation is quite similar to the <code>CountDownLatch</code> one. When the client calls <code>doAction</code>, I create a <code>CompletableFuture</code> <code>lastNotification</code> which represents a task that can be used to get its value in the future. The task is waiting for the notification. When the client is notified, I set the result to the <code>lastNotification</code> by using the method <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html#complete(T)">complete</a>. In the <code>getLastNotification</code>, I use the method <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html#get(long,java.util.concurrent.TimeUnit)">get</a> to get the result of the <code>CompletableFuture</code>. Indeed I don’t benefit a lot by this powerful class <code>CompletableFuture</code> because when I get the value from <code>lastNotification</code>, it’s already a blocking call. The power of the <code>CompletableFuture</code> is that we can create a chain of several tasks that will be executed synchronously or asynchronously in a default thread or a dedicated thread.</p>
+<h3 id="Final-Solution-Rethink-about-the-design"><a href="#Final-Solution-Rethink-about-the-design" class="headerlink" title="Final Solution: Rethink about the design"></a>Final Solution: Rethink about the design</h3><p>I’m always happy when I’ve found a solution to deal with a problem especially when the problem seems difficult. But finding a solution is not the end, I need to ask myself why I have to face this annoying problem. Because sometimes, the true problem is hidden behind the symptom.</p>
+<blockquote>
+<p>A: “Why we should deal with this asynchronous problem while we just want to test our functional logic.”</p>
+<p>B: “Because we have a separate thread to execute notification.”</p>
+<p>A: “Why we need this separate thread?”</p>
+<p>B: “Because in reality, the notification takes time. In the production code, the server should notify dozens of subscribed clients and we want to have a good performance for that. “</p>
+<p>A: “But in the test, we don’t care about the performance, right? We only care about the functional logic is correct or not.”</p>
+<p>B: “Yes, exactly,”</p>
+<p>A: “So what should we do?”</p>
+<p>B: “Maybe re-design MyServer to be able to have different behavior between the production context and the test context. Well…I should be able to inject this ExecutorService.”</p>
+<p>A: “Bingo!”</p>
+</blockquote>
+<p>After rethinking the problem, I can find another solution to deal with this problem: Inject the <code>ExecutorService</code> into <code>MyServer</code> to avoid dealing with the asynchronous problem.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">interface</span> <span class="token class-name">Listener</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> onNotified <span class="token punctuation">(</span><span class="token class-name">String</span> notification<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">interface</span> <span class="token class-name">Server</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> <span class="token function">addListener</span><span class="token punctuation">(</span><span class="token class-name">Listener</span> listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+     
+<span class="token keyword">class</span> <span class="token class-name">MyServer</span> <span class="token keyword">implements</span> <span class="token class-name">Server</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">ExecutorService</span> executor<span class="token punctuation">;</span>
+    <span class="token keyword">volatile</span> <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Listener</span><span class="token punctuation">></span></span> listener <span class="token operator">=</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">public</span> <span class="token class-name">MyServer</span><span class="token punctuation">(</span><span class="token class-name">ExecutorService</span> executor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>executor <span class="token operator">=</span> executor<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAction</span><span class="token punctuation">(</span><span class="token class-name">String</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Image here are some complex domain logic</span>
+        listener<span class="token punctuation">.</span><span class="token function">ifPresent</span><span class="token punctuation">(</span>listener <span class="token operator">-></span>
+            executor<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> listener<span class="token punctuation">.</span><span class="token function">onNotified</span><span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+     
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addListener</span><span class="token punctuation">(</span><span class="token class-name">Listener</span> listener<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>listener <span class="token operator">=</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">solution_RedesignTheServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Client</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Server</span> myServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyServer</span><span class="token punctuation">(</span><span class="token class-name">MoreExecutors</span><span class="token punctuation">.</span><span class="token function">newDirectExecutorService</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>myServer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">doAction</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> client<span class="token punctuation">.</span><span class="token function">getLastNotification</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><a target="_blank" rel="noopener" href="https://guava.dev/releases/23.5-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService--">MoreExecutors</a> is a <a target="_blank" rel="noopener" href="https://github.com/google/guava/wiki">guava</a> utility. <a target="_blank" rel="noopener" href="https://guava.dev/releases/23.5-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService--">MoreExecutors.newDirectExecutorService()</a> tells <code>MyServer</code> to execute the task in the calling thread, which is the main thread. Now in the test, there’s only one thread. I don’t need to deal with the asynchronous problem.</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>As a Java developer, I should know how to use classes like <code>CountDownLatch</code>, <code>CompletableFuture</code>, <code>ExecutorService</code> to deal with asynchronous. In this blog, I use a simplified use case to show how to use them. On the other hand, we can see asynchronous is not simple, sometimes with another design, we can avoid dealing with it.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
+              <a href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag"># 测试</a>
+              <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/code-review-best-practices/" rel="prev" title="Code review best practices">
+                  <i class="fa fa-angle-left"></i> Code review best practices
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/takeaways-from-code-reading-workshop/" rel="next" title="Takeaways from code reading workshop">
+                  Takeaways from code reading workshop <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/how-to-test-an-asynchronous-request/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/how-to-test-an-asynchronous-request/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

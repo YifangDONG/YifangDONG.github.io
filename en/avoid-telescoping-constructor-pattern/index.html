@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:300,300italic,400,400italic,700,700italic%7CZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic%7CRoboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="原文链接：https:&#x2F;&#x2F;www.vojtechruzicka.com&#x2F;avoid-telescoping-constructor-pattern&#x2F;重叠构造函数模式(Telecoping constructor pattern) 十分常见。然而，它有很多缺点。那么，我们应该使用什么替代方案呢？ 重叠构造函数模式Java语言不支持构造函数的默认参数。一个解决方法是“重叠构造函数”(Telecopin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重叠构造函数模式的替代模式">
+<meta property="og:url" content="http://yoursite.com/en/avoid-telescoping-constructor-pattern/index.html">
+<meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="原文链接：https:&#x2F;&#x2F;www.vojtechruzicka.com&#x2F;avoid-telescoping-constructor-pattern&#x2F;重叠构造函数模式(Telecoping constructor pattern) 十分常见。然而，它有很多缺点。那么，我们应该使用什么替代方案呢？ 重叠构造函数模式Java语言不支持构造函数的默认参数。一个解决方法是“重叠构造函数”(Telecopin">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/generate-builder.PNG">
+<meta property="article:published_time" content="2019-01-01T23:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-15T09:53:09.386Z">
+<meta property="article:author" content="Yifang DONG">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/generate-builder.PNG">
+
+
+<link rel="canonical" href="http://yoursite.com/en/avoid-telescoping-constructor-pattern/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/avoid-telescoping-constructor-pattern/","path":"en/avoid-telescoping-constructor-pattern/","title":"重叠构造函数模式的替代模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>重叠构造函数模式的替代模式 | 萨朗儿的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">萨朗儿的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">愿你始终拥有好奇之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-english"><a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>english</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%8F%A0%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">重叠构造函数模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%8F%A0%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">重叠构造函数模式的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88%EF%BC%9AJavaBeans"><span class="nav-number">3.</span> <span class="nav-text">替代方案：JavaBeans</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%882%EF%BC%9A-%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95-Static-Factory-Method"><span class="nav-number">4.</span> <span class="nav-text">替代方案2： 静态工厂方法 (Static Factory Method)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%883%EF%BC%9A%E5%BB%BA%E9%80%A0%E8%80%85-Builder"><span class="nav-number">5.</span> <span class="nav-text">替代方案3：建造者 (Builder)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">5.1.</span> <span class="nav-text">使用过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%B5%8C%E5%A5%97%E7%B1%BBBuilder-vs-%E5%88%86%E7%A6%BBBuilder%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">静态嵌套类Builder vs  分离Builder类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90Builder"><span class="nav-number">5.3.</span> <span class="nav-text">自动生成Builder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E5%B1%95"><span class="nav-number">7.</span> <span class="nav-text">拓展</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yifang DONG</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YifangDONG" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YifangDONG" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:samantha12dong@gmail.com" title="E-Mail → mailto:samantha12dong@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/D_YIF" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;D_YIF" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/avoid-telescoping-constructor-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="重叠构造函数模式的替代模式 | 萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          重叠构造函数模式的替代模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-02T00:00:00+01:00">2019-01-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>原文链接：<a target="_blank" rel="noopener" href="https://www.vojtechruzicka.com/avoid-telescoping-constructor-pattern/">https://www.vojtechruzicka.com/avoid-telescoping-constructor-pattern/</a><br>重叠构造函数模式(Telecoping constructor pattern) 十分常见。然而，它有很多缺点。那么，我们应该使用什么替代方案呢？</p>
+<h2 id="重叠构造函数模式"><a href="#重叠构造函数模式" class="headerlink" title="重叠构造函数模式"></a>重叠构造函数模式</h2><p>Java语言不支持构造函数的默认参数。一个解决方法是“重叠构造函数”(Telecoping constructor)。如下例子所示：构造函数的调用呈现层次结构。一个只有必要参数的构造函数和若干有可选参数的构造函数。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> firstName<span class="token punctuation">;</span> <span class="token comment">//required</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> lastName<span class="token punctuation">;</span> <span class="token comment">//required</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span> <span class="token comment">//optional</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> address<span class="token punctuation">;</span> <span class="token comment">//optional</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">this</span><span class="token punctuation">(</span>firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">,</span> <span class="token string">"No description available"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//可选参数赋默认值</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">,</span> <span class="token class-name">String</span> description<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">,</span> description<span class="token punctuation">,</span> <span class="token string">"No address available"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">,</span> <span class="token class-name">String</span> description<span class="token punctuation">,</span> <span class="token class-name">String</span> address<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>firstName <span class="token operator">=</span> firstName<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>lastName <span class="token operator">=</span> lastName<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>description <span class="token operator">=</span> description<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>address <span class="token operator">=</span> address<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="重叠构造函数模式的缺点"><a href="#重叠构造函数模式的缺点" class="headerlink" title="重叠构造函数模式的缺点"></a>重叠构造函数模式的缺点</h2><p>在上述例子中，只有Person类只有四个属性，看起来似乎没有什么问题。但当类的属性增加时，问题就来了。</p>
+<ol>
+<li>构造函数的可读性变差。由于有很多可选属性和很多构造函数，开发过程中就要读所有的构造函数，然后选择自己需要的。这无形中增加了使用的复杂度。</li>
+<li>开发者调用构造函数时很容易出错(error prone)，由于交换两个类型相同的变量并不会引发编译错误。例如对于第三个构造函数，交换description和address在逻辑上是错误的但编译器并不能提示程序员出错了。</li>
+<li>由于有很多可选的属性，而构造函数不可能是所有属性的排列组合（这样会导致构造函数的个数急剧增加），所以我们使用的时候必然会传入很多类似null，Collections.emptyList()等空集合等等。</li>
+<li>当我们增加属性时，我们需要增加新的构造函数并修改整个构造函数的链条。</li>
+</ol>
+<p>也就是说，这种模式的可扩展性差，难以维护。</p>
+<h2 id="替代方案：JavaBeans"><a href="#替代方案：JavaBeans" class="headerlink" title="替代方案：JavaBeans"></a>替代方案：JavaBeans</h2><p>最简单方便和灵活的替代方案是使用JavaBeans。简单来说，JavaBeans 是一类符合下列规范的Java类：</p>
+<ol>
+<li>JavaBean 必须是一个public的类</li>
+<li>JavaBean 必须有一个空的构造函数</li>
+<li>JavaBean 的属性&#x2F;变量都是private的</li>
+<li>属性应该通过一组 getXxx 和 setXxx 方法来访问。</li>
+</ol>
+<p>例如，之前的例子变成：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//属性不能被设置为final，无法区分属性是必须的或可选的</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> firstName<span class="token punctuation">;</span> 
+    <span class="token keyword">private</span> <span class="token class-name">String</span> lastName<span class="token punctuation">;</span> 
+    <span class="token keyword">private</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span> 
+
+    <span class="token keyword">public</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setFirstName</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>firstName <span class="token operator">=</span> firstName<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setLastName</span><span class="token punctuation">(</span><span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>lastName <span class="token operator">=</span> lastName<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setDescription</span><span class="token punctuation">(</span><span class="token class-name">String</span> description<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>description <span class="token operator">=</span> description<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getFirstName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> firstName<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getLastName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> lastName<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> description<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//使用</span>
+<span class="token class-name">Person</span> toto <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+toto<span class="token punctuation">.</span><span class="token function">setFirstName</span><span class="token punctuation">(</span><span class="token string">"toto"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+toto<span class="token punctuation">.</span><span class="token function">setLastName</span><span class="token punctuation">(</span><span class="token string">"titi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+toto<span class="token punctuation">.</span><span class="token function">setDescription</span><span class="token punctuation">(</span><span class="token string">"I'am a simple person"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>优点是显而易见的：</p>
+<ul>
+<li>简单，容易修改。</li>
+<li>可读性强，例如不会不小心错误地将description赋值给lastName。</li>
+<li>容易扩展，增加类的属性。</li>
+</ul>
+<p>然而缺点也是非常严重的:  JavaBeans是可变的(Mutable)，也就是说即使在构造完成后，Person的实例可以随时使用setter修改。对象的构造不再是原子操作，我们可以在对象没有构造完全的状态下访问对象。同时当我们访问对象时不知道它的状态，也不能确定是否在创建对象和访问对象的过程之间有其他进程修改了该对象。也就是说JavaBeans丧失了所有不可变对象(Immutable)的优点，特别是线程安全。</p>
+<h2 id="替代方案2：-静态工厂方法-Static-Factory-Method"><a href="#替代方案2：-静态工厂方法-Static-Factory-Method" class="headerlink" title="替代方案2： 静态工厂方法 (Static Factory Method)"></a>替代方案2： 静态工厂方法 (Static Factory Method)</h2><p>重叠构造函数模式的缺点之一是可读性差。由于构造函数都具有相同的名称，因此很难区分彼此。静态工厂方法便是用来解决这个问题的。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>
+        
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Person</span> <span class="token function">createNamedPerson</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span>firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Person</span> <span class="token function">createAnonymousPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Anonymous"</span><span class="token punctuation">,</span> <span class="token string">"Anonymous"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">private</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>firstName <span class="token operator">=</span> firstName<span class="token punctuation">;</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>lastName <span class="token operator">=</span> lastName<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+    
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>正如上面的例子所示，静态方法的返回值是Person类的实例。与构造函数相比，这样做的好处有：</p>
+<ol>
+<li><p>每个方法都有一个不同的描述性的名字，揭示了该方法的意图</p>
+</li>
+<li><p>返回值不需要每次都返回一个全新的实例，这样的实现常被用于实例缓存，池化等等。例如：</p>
+</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PersonProvider</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Person</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> cache<span class="token punctuation">.</span><span class="token function">computeIfAbsent</span><span class="token punctuation">(</span>
+            firstName<span class="token operator">+</span>lastName<span class="token punctuation">,</span> 
+            k <span class="token operator">-></span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span>firstName<span class="token punctuation">,</span>lastName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>和JavaBeans不同的是静态工厂方法能返回不可变实例。然而，与构造函数一样，静态工厂方法的扩展性不好，尤其是当参数很多时，起一个恰当的函数名也是一个让人头疼的问题。</p>
+<h2 id="替代方案3：建造者-Builder"><a href="#替代方案3：建造者-Builder" class="headerlink" title="替代方案3：建造者 (Builder)"></a>替代方案3：建造者 (Builder)</h2><p>如果不变性是一个问题，那么建造者模式是一个很流行的方法用于构造具有许多参数的对象。这个方法是 <a target="_blank" rel="noopener" href="https://twitter.com/joshbloch">Joshua Bloch</a>在他的书<a target="_blank" rel="noopener" href="https://www.oreilly.com/library/view/effective-java-3rd/9780134686097/">Effective Java</a>中提出的。（具体可见：<em>Chapter 2 - Creating and Destroying Objects - Item 2: Consider a builder when faced with many constructor parameters</em>）不要和 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%8F%AF%E5%A4%8D%E7%94%A8%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%9F%BA%E7%A1%80">Gang of Four</a>的构造器模式（Builder pattern）搞混了，Gof的Builder解决的是将复杂对象的建造过程抽象出来（使用抽象类或接口进行抽象），使这个抽象过程的不同实现方法可以构造出拥有不同属性的对象。关于Gof的Builder的介绍可以看<a target="_blank" rel="noopener" href="https://design-patterns.readthedocs.io/zh_CN/latest/creational_patterns/builder.html">这篇文章</a></p>
+<h3 id="使用过程"><a href="#使用过程" class="headerlink" title="使用过程"></a>使用过程</h3><p>使用过程很像使用StringBuilder</p>
+<ol>
+<li>创建builder实例。可以在builder的创建时使用含参构造函数，参数是要创建的类的必要属性。</li>
+<li>逐个设置属性。通常，为了方便链式方法调用(<a target="_blank" rel="noopener" href="http://martinfowler.com/bliki/FluentInterface.html">fluent interface</a>)，构造器返回自己本身。</li>
+<li>调用build()方法获得构造好的实例。build()方法的底层实现（Under the hood）是调用需要构造的类的构造函数。因此这样做是一次构建，不可改变。</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">PersonBuilder</span> builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PersonBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Person</span> bob <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">firstName</span><span class="token punctuation">(</span><span class="token string">"Bob"</span><span class="token punctuation">)</span>
+    				<span class="token punctuation">.</span><span class="token function">lastName</span><span class="token punctuation">(</span><span class="token string">"Builder"</span><span class="token punctuation">)</span>
+    				<span class="token punctuation">.</span><span class="token function">description</span><span class="token punctuation">(</span><span class="token string">"create from Builder"</span><span class="token punctuation">)</span>
+    				<span class="token punctuation">.</span><span class="token function">address</span><span class="token punctuation">(</span><span class="token string">"1 road, builder city"</span><span class="token punctuation">)</span>
+    				<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="静态嵌套类Builder-vs-分离Builder类"><a href="#静态嵌套类Builder-vs-分离Builder类" class="headerlink" title="静态嵌套类Builder vs  分离Builder类"></a>静态嵌套类Builder vs  分离Builder类</h3><p>有两种基本的builder的实现方法：</p>
+<ul>
+<li>Builder作为单独的类</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PersonBuilder</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> firstName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> lastName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">PersonBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">PersonBuilder</span> <span class="token function">firstName</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>firstName <span class="token operator">=</span> val<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">PersonBuilder</span> <span class="token function">lastName</span><span class="token punctuation">(</span><span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>lastName <span class="token operator">=</span> lastName<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">PersonBuilder</span> <span class="token function">description</span><span class="token punctuation">(</span><span class="token class-name">String</span> description<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>description <span class="token operator">=</span> description<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">PersonBuilder</span> <span class="token function">address</span><span class="token punctuation">(</span><span class="token class-name">String</span> address<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>address <span class="token operator">=</span> address<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Person</span> <span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span>firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">,</span> description<span class="token punctuation">,</span> address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Builder作为静态嵌套类（static nested  classes）。这里的静态意味着它可以在封闭类的实例上单独实例化。优点是它可以访问封闭类的私有成员。这意味着我们可以将构造函数声明为private从而强制使用Builder来实例化该类而禁止使用类的构造函数来实例化。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> firstName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> lastName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span>
+	<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+    
+    <span class="token keyword">private</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">Builder</span> builder<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        firstName <span class="token operator">=</span> builder<span class="token punctuation">.</span>firstName<span class="token punctuation">;</span>
+        lastName <span class="token operator">=</span> builder<span class="token punctuation">.</span>lastName<span class="token punctuation">;</span>
+        description <span class="token operator">=</span> builder<span class="token punctuation">.</span>description<span class="token punctuation">;</span>
+        address <span class="token operator">=</span> builder<span class="token punctuation">.</span>address<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">Builder</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token class-name">String</span> firstName<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token class-name">String</span> lastName<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Builder</span> <span class="token function">firstName</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>firstName <span class="token operator">=</span> firstName<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Builder</span> <span class="token function">lastName</span><span class="token punctuation">(</span><span class="token class-name">String</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>lastName <span class="token operator">=</span> lastName<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Builder</span> <span class="token function">description</span><span class="token punctuation">(</span><span class="token class-name">String</span> description<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>description <span class="token operator">=</span> description<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Builder</span> <span class="token function">age</span><span class="token punctuation">(</span><span class="token class-name">String</span> address<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>address <span class="token operator">=</span> address<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">public</span> <span class="token class-name">Person</span> <span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>选择主要取决于个人偏好。很多人认为将Builder作为内部类很方便，将Builder和类捆绑在一起。私有构造函数也很常见。我个人通常会避免内部类，因此我喜欢将Builder和类分开（尽管在同一个包中）。根据单一责任原则，我认为这是两种不同的责任。我也很少禁止直接调用构造函数直接实例化类，除非有特殊的原因。如果有必要，我会使用protected（package private）限定构造函数，这样我仍可以在同一个包中使用分离的Builder并且防止从包的外部实例化该类。</p>
+<h3 id="自动生成Builder"><a href="#自动生成Builder" class="headerlink" title="自动生成Builder"></a>自动生成Builder</h3><p>IntelliJ 的重构方法可以帮助我们自动生成Builder。右键 -&gt; refactor -&gt; replace constructor with builder<br><img src="/images/generate-builder.PNG" alt="generate-builder"></p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Builder不是一个银弹，虽然它可以解决我们面对造函数有很多参数的问题。使用上述的哪种方法取决于具体情况。事实上，每种方法都有其优势和缺点。我们应该进一步思考的是：</p>
+<ol>
+<li>为什么这个类有这么多的属性？也许这是一个信号，警告我们这个类有太多的责任。它是否违背了单一责任原则（<a target="_blank" rel="noopener" href="https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html">the single responsibility principle</a>）？我们是否应该提取其中的某些参数封装(encapsulate)在一个类中？</li>
+<li>或许类的属性足够少，可选属性的组合很少并且其余的都可以用已知的默认值代替，在这种情况下我们可以只用构造函数即可。</li>
+<li>也许不变性并不重要？也许这些类的属性会被频繁得改变，而每次创建新实例的开销很大？也许并不涉及并发？那么让我们坚持使用简单的JavaBeans，尽管这个模式被认为是过时的（old school style）。</li>
+<li>我们关心构造的实例是不可变的，线程安全的，那么让我们坚持使用Builder模式。</li>
+<li>构造过程复杂？对于不同的对象有像狗的构造过程？这时我们需要Gang of Four的Builder模式。</li>
+</ol>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/java/javase/documentation/spec-136004.html">JavaBeans 规范</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/just-do-it/" rel="prev" title="只管去做">
+                  <i class="fa fa-angle-left"></i> 只管去做
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/the-doctor's-career/" rel="next" title="医生的成长">
+                  医生的成长 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/avoid-telescoping-constructor-pattern/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/avoid-telescoping-constructor-pattern/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

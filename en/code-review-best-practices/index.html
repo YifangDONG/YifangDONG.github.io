@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:300,300italic,400,400italic,700,700italic%7CZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic%7CRoboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review proc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Code review best practices">
+<meta property="og:url" content="http://yoursite.com/en/code-review-best-practices/index.html">
+<meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review proc">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-18T22:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-15T09:53:09.388Z">
+<meta property="article:author" content="Yifang DONG">
+<meta property="article:tag" content="English writing">
+<meta property="article:tag" content="最佳实践">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/en/code-review-best-practices/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/code-review-best-practices/","path":"en/code-review-best-practices/","title":"Code review best practices"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Code review best practices | 萨朗儿的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">萨朗儿的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">愿你始终拥有好奇之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-english"><a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>english</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-is-the-team-doing-reviews"><span class="nav-number">1.</span> <span class="nav-text">Why is the team doing reviews?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-team-members-looking-for"><span class="nav-number">2.</span> <span class="nav-text">What are team members looking for?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Who-is-involved"><span class="nav-number">3.</span> <span class="nav-text">Who is involved?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When-does-the-team-do-reviews"><span class="nav-number">4.</span> <span class="nav-text">When does the team do reviews?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Where-does-the-team-do-reviews"><span class="nav-number">5.</span> <span class="nav-text">Where does the team do reviews?</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yifang DONG</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YifangDONG" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YifangDONG" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:samantha12dong@gmail.com" title="E-Mail → mailto:samantha12dong@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/D_YIF" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;D_YIF" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/code-review-best-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Code review best practices | 萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Code review best practices
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2020-06-19T00:00:00+02:00">2020-06-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>As a developer, code review is one of my daily tasks. I would like to make it valuable and engaging. Thinking about the following questions allows me to know how to build an efficient code review process. This blog is inspired by <a target="_blank" rel="noopener" href="https://blogs.oracle.com/javamagazine/five-code-review-antipatterns">five code review antipatterns</a></p>
+<span id="more"></span>
+
+<h3 id="Why-is-the-team-doing-reviews"><a href="#Why-is-the-team-doing-reviews" class="headerlink" title="Why is the team doing reviews?"></a>Why is the team doing reviews?</h3><p>There are several reasons we do the code review. The most common one is to ensure the code readability and verify the implementation matches the requirement. That’s also the simplest type of reviews for both reviewers and developers as our team agrees on what clean code looks like. The second reason is to review the design. Design reviews always take time as we always have lively debates, so when a developer thinks he needs a design review, he should ask for the code review as early as possible. Last but not least, the code review also serves to share knowledge. When developers have free time, they can review their coworkers’ code and thus keep up with what they have done so far.</p>
+<h3 id="What-are-team-members-looking-for"><a href="#What-are-team-members-looking-for" class="headerlink" title="What are team members looking for?"></a>What are team members looking for?</h3><p>The purpose of code review is to ensure code readability. We are looking to see if naming is ambiguous, if the method is decomposed illogically, or if the code is prone to errors.  We always use <em>Effective Java</em> as a reference for the review. For the design review, there’s no one standard to follow, because the code design is usually a question of how to make trade-offs. There’s no one perfect design. We can only make a good enough design. </p>
+<h3 id="Who-is-involved"><a href="#Who-is-involved" class="headerlink" title="Who is involved?"></a>Who is involved?</h3><p>Everyone should review the code, no matter if he is junior or senior. The code can also be reviewed by several people. But we need one assigned reviewer who is responsible for saying when the code is good enough to submit. This ensures that every code review has an owner to push to completion. When reviewers and developers have different opinions, an expert can be involved to make a final decision. </p>
+<h3 id="When-does-the-team-do-reviews"><a href="#When-does-the-team-do-reviews" class="headerlink" title="When does the team do reviews?"></a>When does the team do reviews?</h3><p>Usually, reviews are required when the developer finishes his coding. It’s a waste of time for a reviewer to review unfinished work. However, when many modules need to be modified, the developer should do a progressive review. Once part of the development is finished, he can ask for a review. As mentioned before, the design review should be initiated as early as possible to avoid having to redo the entire development. As for the knowledge sharing review, it can happen anytime. For example, when I come back from vacation or switch to another project, I can review the submitted code to catch up on the evolution of the project.</p>
+<h3 id="Where-does-the-team-do-reviews"><a href="#Where-does-the-team-do-reviews" class="headerlink" title="Where does the team do reviews?"></a>Where does the team do reviews?</h3><p>We use Swarm as a review tool. It provides some functions such as comparing the difference between two versions and notifying the developer once a comment is added or the review status is changed. We can also configure the rules such as the code with at least one vote-up can merge to the main branch. Comparing with Git Pull-Request, Swarm doesn’t integrate well with the Jenkins pipeline.</p>
+<p>Swarm is used for reviewers to add comments. Some might be a task to fix, others are open questions for better design or requests for information. When there are many small tasks added during the review, to avoid excessive back and forth, the developer and reviewer will work through the source code together.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
+              <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag"># 最佳实践</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/from-junior-to-senior-en/" rel="prev" title="From a junior to a senior">
+                  <i class="fa fa-angle-left"></i> From a junior to a senior
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/how-to-test-an-asynchronous-request/" rel="next" title="How to test an asynchronous request">
+                  How to test an asynchronous request <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/code-review-best-practices/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/code-review-best-practices/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

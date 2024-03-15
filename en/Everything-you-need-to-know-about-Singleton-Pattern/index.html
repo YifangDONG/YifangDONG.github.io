@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:300,300italic,400,400italic,700,700italic%7CZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic%7CRoboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Q1: What is a singleton pattern and why we need it?I think most of you know the singleton pattern at least heard about it.  It seems to be the easiest design pattern. For me, it’s the first  design pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Everything you need to know about Singleton Pattern">
+<meta property="og:url" content="http://yoursite.com/en/Everything-you-need-to-know-about-Singleton-Pattern/index.html">
+<meta property="og:site_name" content="萨朗儿的博客">
+<meta property="og:description" content="Q1: What is a singleton pattern and why we need it?I think most of you know the singleton pattern at least heard about it.  It seems to be the easiest design pattern. For me, it’s the first  design pa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/JVM-class-loading.png">
+<meta property="article:published_time" content="2021-01-09T23:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-15T09:53:09.389Z">
+<meta property="article:author" content="Yifang DONG">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="English writing">
+<meta property="article:tag" content="Design pattern">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/JVM-class-loading.png">
+
+
+<link rel="canonical" href="http://yoursite.com/en/Everything-you-need-to-know-about-Singleton-Pattern/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/Everything-you-need-to-know-about-Singleton-Pattern/","path":"en/Everything-you-need-to-know-about-Singleton-Pattern/","title":"Everything you need to know about Singleton Pattern"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Everything you need to know about Singleton Pattern | 萨朗儿的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">萨朗儿的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">愿你始终拥有好奇之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-english"><a href="/en/" rel="section"><i class="fa fa-language fa-fw"></i>english</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q1-What-is-a-singleton-pattern-and-why-we-need-it"><span class="nav-number">1.</span> <span class="nav-text">Q1: What is a singleton pattern and why we need it?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q2-Do-you-know-the-two-modes-to-implement-the-singleton-pattern"><span class="nav-number">2.</span> <span class="nav-text">Q2: Do you know the two modes to implement the singleton pattern?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q3-How-to-make-lazy-initialization-thread-safe"><span class="nav-number">3.</span> <span class="nav-text">Q3: How to make lazy initialization thread-safe?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q4-Is-there-a-hack-to-break-the-restriction"><span class="nav-number">4.</span> <span class="nav-text">Q4: Is there a hack to break the restriction?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-number">5.</span> <span class="nav-text">Takeaway</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yifang DONG</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YifangDONG" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YifangDONG" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:samantha12dong@gmail.com" title="E-Mail → mailto:samantha12dong@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/D_YIF" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;D_YIF" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Everything-you-need-to-know-about-Singleton-Pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yifang DONG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Everything you need to know about Singleton Pattern | 萨朗儿的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Everything you need to know about Singleton Pattern
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-01-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-10T00:00:00+01:00">2021-01-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Q1-What-is-a-singleton-pattern-and-why-we-need-it"><a href="#Q1-What-is-a-singleton-pattern-and-why-we-need-it" class="headerlink" title="Q1: What is a singleton pattern and why we need it?"></a>Q1: What is a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton pattern </a>and why we need it?</h2><p>I think most of you know the singleton pattern at least heard about it.  It seems to be the easiest design pattern. For me, it’s the first  design pattern that I’ve learned at school. However, it’s not as simple  as it looks like especially there are lots of implementation  concerns. It looks simple because we can use just one simple phrase to  describe it. Singleton pattern ensures us to create one and only one  instance of a class in the memory. A more precise definition in GoF is  that “<strong>Ensure a class only has one instance, and provide a global point of access to it.</strong>“</p>
+<p>I don’t know what do you think about this definition. For me, when I  first heard about it, I memorized it quickly and couldn’t forget it. But now I feel it’s strange. Why we need only one instance and global  access to it? Firstly, it doesn’t make sense to have a single instance  to save memory. Nowadays, memory is bigger enough for lots of instances. Secondly, global access looks bad to me. It’s definitely easy for a  developer to use it, but the cost is very high when you need to find the bug, analyze the dependencies, test your code, etc. Thirdly, the  singleton seems out of fashion. The popular design is to have  multi-instance so that the application has high scalability. After some  search, I finally find a reasonable example to use the singleton  pattern, which is the Windows task manager. We don’t need more than one  task manager if they show the same information, that’s a pure waste of  resources. It’s even worse if a user can open two task managers but has  different information on each. The user will feel confused. I find  another example is the UID generator. In short, all that is to show you  that the singleton pattern has a limited use case.</p>
+<h2 id="Q2-Do-you-know-the-two-modes-to-implement-the-singleton-pattern"><a href="#Q2-Do-you-know-the-two-modes-to-implement-the-singleton-pattern" class="headerlink" title="Q2: Do you know the two modes to implement the singleton pattern?"></a>Q2: Do you know the two modes to implement the singleton pattern?</h2><p>Singleton pattern is a creational pattern, which is a hint for us. There are two  ways to implement it: a lazy way and an eager way. What does that mean?</p>
+<p>The lazy initialization means the instance of the singleton class is  created when a client wants to use the instance through the global  access method. </p>
+<p>The private constructor prevents any client outside of the class to create an instance of <code>LazySingleton</code>. The static field keeps the reference to the single instance of this  class. And the access to this field is published by a public static  method <code>getInstance()</code>, which provides a global and unique way to access the instance of <code>LazySingleton </code>class. </p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LazySingleton</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">LazySingleton</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">LazySingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// simulate long initialization</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">LazySingleton</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token constant">INSTANCE</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token constant">INSTANCE</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LazySingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>The eager initialization means the instance of the singleton class is created at the time of class loading even though the client might not  using it. We need some knowledge about how JVM works to understand what  means “the time of class loading”.</p>
+<p>Here is a high-level schema to show you the main step for JVM to load class, you can find details of each step in <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-5.html">Java Virtual Machine Specification #Chapter 5. Loading, Linking, and Initializing</a></p>
+<p><img src="/images/JVM-class-loading.png" alt="JVM class loading"></p>
+<p>Loading: JVM uses a class loader to attempt to find the binary  representation of a class. Verification checks that the loaded .class is well-formed. Preparation involves the allocation of static storage and  meta-data. Resolution checks the symbolic references from the class  loaded to other classes and interfaces. Initialization executes all  class variable initializers and static initializers of the class.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EagerSingleton</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">EagerSingleton</span> <span class="token constant">INSTANCE</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EagerSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">EagerSingleton</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// simulate long initialization</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">EagerSingleton</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Precisely the instance of <code>EagerSingleton</code> is created in the step “initializing”. And from <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.4.2">Java Language Specification #12.4.2. Detailed Initialization Procedure</a>, we know that “The implementation of the Java Virtual Machine is responsible for taking care of synchronization and recursive initialization”, so we are sure to have exactly one instance. </p>
+<h2 id="Q3-How-to-make-lazy-initialization-thread-safe"><a href="#Q3-How-to-make-lazy-initialization-thread-safe" class="headerlink" title="Q3: How to make lazy initialization thread-safe?"></a>Q3: How to make lazy initialization thread-safe?</h2><p>The lazy initialization singleton is not thread-safe. There’s a race condition when two threads call <code>getInstance()</code>. Both of them will verify that the condition INSTANCE &#x3D;&#x3D; null is true, so both of them will create a new instance. We can write a simple test to show that.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">SingletonTest</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token class-name">LazySingletonIsNotThreadSafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span><span class="token punctuation">,</span> <span class="token class-name">ExecutionException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Callable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">LazySingleton</span><span class="token punctuation">></span></span> getInstance <span class="token operator">=</span> <span class="token class-name">LazySingleton</span><span class="token operator">::</span><span class="token function">getInstance</span><span class="token punctuation">;</span>
+        <span class="token class-name">ExecutorService</span> executorService <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Future</span><span class="token punctuation">&lt;</span><span class="token class-name">LazySingleton</span><span class="token punctuation">></span><span class="token punctuation">></span></span> singletonFutures <span class="token operator">=</span> executorService
+            <span class="token punctuation">.</span><span class="token function">invokeAll</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>getInstance<span class="token punctuation">,</span> getInstance<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">assertNotEquals</span><span class="token punctuation">(</span>singletonFutures<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> singletonFutures<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>The first solution to avoid race conditions is to add a lock. In java, we use the keyword <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.1"><strong><code>synchronized</code></strong></a>.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadSafeSingleton</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">volatile</span> <span class="token class-name">ThreadSafeSingleton</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">ThreadSafeSingleton</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">synchronized</span> <span class="token class-name">ThreadSafeSingleton</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token constant">INSTANCE</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token constant">INSTANCE</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadSafeSingleton</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Adding synchronized in the method <code>getInstance()</code>means that  every time when a thread wants to get the instance, it first needs to  take the lock. However, the race condition can occur only when the first time to get the instance. We only need to take a lock at that moment.  Once the instance is created, we don’t need the synchronization. We know that lock is heavy in java, so we want to reduce the times to take a  lock. That’s the main idea of double-checked locking.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DoubleCheckLockSingleton</span> <span class="token punctuation">&#123;</span>
+ 
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">volatile</span> <span class="token class-name">DoubleCheckLockSingleton</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">private</span> <span class="token class-name">DoubleCheckLockSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">DoubleCheckLockSingleton</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token constant">INSTANCE</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token class-name">DoubleCheckLockSingleton</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token constant">INSTANCE</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token constant">INSTANCE</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DoubleCheckLockSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>A detail to note is that we use a keyword <strong><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-8.html#jls-8.3.1.4"><code>volatile</code></a></strong> for the field INSTANCE. Why we need that? Because the expression <code>INSTANCE = new DoubleCheckLockSingleton();</code> is interpreted into 3 instructions.  And because of the reordering mechanism in CUP, we will not have the  behavior as expected. You can find more illustration in the article <a target="_blank" rel="noopener" href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The “Double-Checked Locking is Broken” Declaration</a></p>
+<pre class="line-numbers language-none"><code class="language-none">1. memory &#x3D; allocate() &#x2F;&#x2F; allocate memory
+2. createInstance(memory) &#x2F;&#x2F; create instance using the allocated memory
+3. INSTANCE &#x3D; memory &#x2F;&#x2F; point the INSTANCE to the allocated memory
+ 
+JVM and CPU can reorder the step 2 &amp; 3
+1. memory &#x3D; allocate()
+3. INSTANCE &#x3D; memory
+2. createInstance(memory)
+ 
+In this case, when thread 1 finished step 1,3, the INSTANCE &#x3D;&#x3D; null condition is false, but the instance hasn&#39;t been created.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>JLS defines a <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html#jls-17.4.5">Happens-before Order</a>: Two actions can be ordered by a happens-before relationship. If one  action happens-before another, then the first is visible to and ordered  before the second. For a volatile filed, A write to a volatile field  happens-before every subsequent read of that field. This JLS guarantees  that INSTANCE can be seen by other threads only when creating the  instance is finished.</p>
+<p>If we go back to study the  initialization part of JLS, we can find another solution to avoid the  race condition. We know that JVM should provide a synchronized and recursive initialization. If we create the instance when declaring the  static field of a class, we can sure that there will be only one  instance. Wait for a minute, do we back to the eager initialization  solution? Not really, we still want the instance is created the moment  the client want to use it. That’s means we need to add an indirection.  We want the class contains the instance is initialized when a client  calls the <code>getInstance()</code>. An inner static class can help us to achieve that. That’s the main idea of the initialization on demand holder. </p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">InitializationOnDemandHolder</span> <span class="token punctuation">&#123;</span>
+ 
+    <span class="token keyword">private</span> <span class="token class-name">InitializationOnDemandHolder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">InitializationOnDemandHolder</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token class-name">LazyHolder</span><span class="token punctuation">.</span><span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+ 
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">LazyHolder</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">InitializationOnDemandHolder</span> <span class="token constant">INSTANCE</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">InitializationOnDemandHolder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>When the class <code>InitializationOnDemandHolder </code>is loaded by the JVM, the class goes through initialization. Since the  class does not have any static variables to initialize, the  initialization completes trivially. The static class definition <code>LazyHolder</code> within it is not initialized until the JVM determines that <code>LazyHolder</code> must be executed. The static class <code>LazyHolder</code> is only executed when the static method <code>getInstance</code> is invoked on the class <code>InitializationOnDemandHolder</code>, and the first time this happens the JVM will load and initialize the <code>LazyHolder</code> class. The initialization of the <code>LazyHolder</code> class results in static variable <code>INSTANCE</code> being initialized by executing the (private) constructor for the outer class <code>InitializationOnDemandHolder</code>. Since the class initialization phase is guaranteed by the JLS to be  sequential, i.e. non-concurrent, no further synchronization is required in the static <code>getInstance</code> method during loading and initialization. And since the initialization phase writes the static variable <code>INSTANCE</code> in a sequential operation, all subsequent concurrent invocations of the <code>getInstance</code> will return the same correctly initialized <code>INSTANCE</code> without incurring any additional synchronization overhead. (copy from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom">wiki </a>).</p>
+<h2 id="Q4-Is-there-a-hack-to-break-the-restriction"><a href="#Q4-Is-there-a-hack-to-break-the-restriction" class="headerlink" title="Q4: Is there a hack to break the restriction?"></a>Q4: Is there a hack to break the restriction?</h2><p>Yes, we can still hack this class to have more than one instance. Here’s the example:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">SingletonTest</span> <span class="token punctuation">&#123;</span>
+ 
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">createSingletonWithReflection_getTwoInstances</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span><span class="token punctuation">,</span> <span class="token class-name">IllegalAccessException</span><span class="token punctuation">,</span> <span class="token class-name">InvocationTargetException</span><span class="token punctuation">,</span> <span class="token class-name">InstantiationException</span> <span class="token punctuation">&#123;</span>
+ 
+        <span class="token class-name">Constructor</span> constructor <span class="token operator">=</span> <span class="token class-name">LazySingleton</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        constructor<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+        <span class="token class-name">LazySingleton</span> singleton1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">LazySingleton</span><span class="token punctuation">)</span>constructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">LazySingleton</span> singleton2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">LazySingleton</span><span class="token punctuation">)</span>constructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+        <span class="token function">assertNotEquals</span><span class="token punctuation">(</span>singleton2<span class="token punctuation">,</span> singleton1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>An enum class can help us to resolve this hack. As it’s a hack, this solution is only mentioned here for curiosity.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">EnumSingleton</span> <span class="token punctuation">&#123;</span>
+ 
+    <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">public</span> <span class="token class-name">EnumSingleton</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token constant">INSTANCE</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><ol>
+<li>Singleton pattern is a pattern to ensure a class only has one instance and  provide a global point of access to it. It has a limited use case.</li>
+<li>Double-checked locking is a general correct way to implement a lazy initialization singleton.</li>
+<li>Thanks to JLS, we have Initialization-on-demand holder implementation.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/English-writing/" rel="tag"># English writing</a>
+              <a href="/tags/Design-pattern/" rel="tag"># Design pattern</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020-feedback/" rel="prev" title="2020 Feedback">
+                  <i class="fa fa-angle-left"></i> 2020 Feedback
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021-feedback/" rel="next" title="2021 Feedback">
+                  2021 Feedback <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/Everything-you-need-to-know-about-Singleton-Pattern/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/Everything-you-need-to-know-about-Singleton-Pattern/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Yifang DONG</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
