@@ -65,32 +65,36 @@ body {
     color: #f5f4eb;
     background-color: #683f2a;
 }
+a.menu-item-active {
+    background: #683f2a;
+}
 // blog 主体背景色
-.content-wrap {
+.main-inner {
     background-color: #f5f4eb
 }
 // 归档页设定
 // 时间轴色带
-.posts-collapse::before {
+
+.posts-collapse .post-content::before {
     background-color: #683f2a;
 }
 // 时间轴写作时间
-.posts-collapse .post-meta {
+.posts-collapse .post-content .post-meta {
 }
 // 时间轴文章标题左边圆点颜色
-.posts-collapse .post-header:hover::before {
+.posts-collapse .post-content .post-header:hover::before {
     background-color: #683f2a;
 }
 // 时间轴文章标题
-.posts-collapse .post-title a {
+.posts-collapse .post-content .post-title a {
     color: #683f2a;
 }
-.posts-collapse .post-title a:hover {
+.posts-collapse .post-content .post-title a:hover {
     color: #683f2a;
 }
 
 // 年份
-.posts-collapse .collection-year {
+.posts-collapse .post-content .collection-year {
 
 }
 //文章内表格设置
