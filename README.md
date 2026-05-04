@@ -21,10 +21,6 @@ EU visitors: consider adding consent mode or a banner before loading GA; this is
 
 The workflow in `.github/workflows/deploy.yml` uploads `dist/` to GitHub Pages. Enable **Pages** in the repo settings with the **GitHub Actions** source. The site URL is configured as `https://yifangdong.github.io` in `astro.config.mjs`.
 
-## Migrating from Hexo
-
-Legacy posts were migrated with `npm run migrate:hexo` (requires a `source/_posts` tree). That folder has been removed after migration; the script remains for reference.
-
 ## Blog authoring (`src/content/blog/*.md`)
 
 Required frontmatter: `title`, `description`, `pubDate` (`YYYY-MM-DD`), `lang` (`en` | `zh-cn`), `tags` (array), `slug` (URL segment, unique per language).
