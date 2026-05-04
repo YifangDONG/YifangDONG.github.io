@@ -72,6 +72,27 @@
   .markdown :where(img) {
     @apply my-6 max-h-[480px] rounded-lg border border-muted bg-raised object-contain shadow-sm;
   }
+
+  /* Lead image: first markdown block is a single <img> (common ![alt](url) hero) — full article column, centered */
+  .markdown > p:first-child:has(> img:only-child) {
+    @apply mx-auto my-4 max-w-full text-center;
+  }
+  .markdown > p:first-child:has(> img:only-child) img {
+    @apply mx-auto my-0 block h-auto w-full max-w-full rounded-lg border border-muted bg-raised shadow-sm;
+    max-height: min(75vh, 36rem);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .markdown > figure:first-child:has(> img) {
+    @apply mx-auto my-4 max-w-full;
+  }
+  .markdown > figure:first-child:has(> img) > img {
+    @apply mx-auto my-0 block h-auto w-full max-w-full rounded-lg border border-muted bg-raised shadow-sm;
+    max-height: min(75vh, 36rem);
+    object-fit: contain;
+    object-position: center;
+  }
   .markdown :where(table) {
     @apply my-6 w-full border-collapse overflow-hidden rounded-lg border border-muted text-sm;
   }
