@@ -1,0 +1,55 @@
+---
+import { routes } from '@/lib/routes';
+import { SITE } from '@/lib/site';
+
+interface Props {
+  lang: 'en' | 'zh-cn';
+}
+
+const { lang } = Astro.props;
+
+const tagline = lang === 'en' ? SITE.taglineEn : SITE.taglineZh;
+
+const r = routes[lang];
+const home = r.home;
+const blog = r.blog;
+const tags = r.tags;
+const about = r.about;
+const archives = r.archives;
+
+const nav = [
+  { href: home, label: lang === 'en' ? 'Home' : '首页' },
+  { href: blog, label: lang === 'en' ? 'Blog' : '文章' },
+  { href: tags, label: lang === 'en' ? 'Tags' : '标签' },
+  { href: archives, label: lang === 'en' ? 'Archives' : '归档' },
+  { href: about, label: lang === 'en' ? 'About' : '关于' },
+] as const;
+---
+
+<header class="border-b border-muted bg-raised/90 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4 px-4 py-5">
+    <a
+      href={home}
+      class="group flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5 font-serif no-underline"
+    >
+      <span class="text-xl font-semibold tracking-tight text-ink">
+        {lang === 'en' ? SITE.name : '一方的博客'}
+      </span>
+      <span class="max-w-[16rem] text-xs font-normal italic leading-snug text-ink/60 sm:max-w-xs sm:text-sm">
+        {tagline}
+      </span>
+    </a>
+    <nav class="flex flex-wrap gap-1 text-sm font-medium">
+      {
+        nav.map(({ href, label }) => (
+          <a
+            href={href}
+            class="rounded-md px-2 py-1 text-ink no-underline decoration-transparent hover:bg-surface hover:text-accent"
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

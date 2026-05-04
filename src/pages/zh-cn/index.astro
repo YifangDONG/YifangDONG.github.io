@@ -1,0 +1,52 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { publishedPosts, postSlug } from '@/lib/blog';
+
+const posts = (await publishedPosts('zh-cn')).slice(0, 8);
+---
+
+<PageLayout
+  title={SITE.titleDefault}
+  description="软件工程笔记与思考 — 中文与英文。"
+  lang="zh-cn"
+  canonicalPath="/zh-cn/"
+  alternates={pairAlternates('/', '/zh-cn/')}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: `${SITE.url}/zh-cn/`,
+    description: '软件工程笔记与思考 — 中文与英文。',
+    inLanguage: 'zh-CN',
+  }}
+>
+  <section class="mt-2">
+    <h2 class="font-serif text-2xl font-semibold text-accent">最新文章</h2>
+    <ul class="mt-6 space-y-4">
+      {
+        posts.map((p) => (
+          <li class="rounded-lg border border-muted bg-raised p-4 shadow-sm transition-shadow hover:shadow-md">
+            <a href={`/zh-cn/blog/${postSlug(p)}/`} class="block no-underline">
+              <span class="font-serif text-lg font-semibold text-ink">{p.data.title}</span>
+              <time
+                class="mt-1 block text-sm text-ink/60"
+                datetime={p.data.pubDate.toISOString()}
+              >
+                {p.data.pubDate.toLocaleDateString('zh-CN', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </time>
+              <p class="mt-2 line-clamp-3 text-sm text-ink/75">{p.data.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8">
+      <a href="/zh-cn/blog/">全部文章 →</a>
+    </p>
+  </section>
+</PageLayout>

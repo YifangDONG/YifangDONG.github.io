@@ -1,0 +1,86 @@
+---
+import '@/styles/global.css';
+import Ga4 from '@/components/Ga4.astro';
+import { MermaidRunner } from '@/components/react/MermaidRunner';
+import { SITE, absoluteUrl } from '@/lib/site';
+
+interface Alternate {
+  hreflang: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  lang: 'en' | 'zh-cn';
+  canonicalPath: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  alternates?: Alternate[];
+}
+
+const { title, description, lang, canonicalPath, ogImage, jsonLd, alternates } = Astro.props;
+
+const canonical = absoluteUrl(canonicalPath);
+const ogUrl = canonical;
+const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
+
+const fullTitle = title === SITE.titleDefault ? title : `${title} | ${SITE.name}`;
+---
+
+<!doctype html>
+<html lang={lang === 'zh-cn' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+    <link rel="canonical" href={canonical} />
+    <title>{fullTitle}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={lang === 'zh-cn' ? 'zh_CN' : 'en'} />
+    {ogImageUrl ? <meta property="og:image" content={ogImageUrl} /> : null}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl ? <meta name="twitter:image" content={ogImageUrl} /> : null}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {alternates?.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {
+      jsonLd ? (
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+      ) : null
+    }
+    <Ga4 />
+  </head>
+  <body class="min-h-screen">
+    <slot />
+    <MermaidRunner client:only="react" />
+    <script is:inline>
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-shiki-copy]');
+        if (!btn || !(btn instanceof HTMLButtonElement)) return;
+        const pre = btn.closest('pre.astro-code');
+        const code = pre?.querySelector('code');
+        if (!code) return;
+        const text = code.innerText.replace(/\n$/, '');
+        navigator.clipboard.writeText(text).then(() => {
+          btn.classList.add('is-copied');
+          btn.setAttribute('aria-label', 'Copied');
+          setTimeout(() => {
+            btn.classList.remove('is-copied');
+            btn.setAttribute('aria-label', 'Copy code');
+          }, 2000);
+        });
+      });
+    </script>
+  </body>
+</html>

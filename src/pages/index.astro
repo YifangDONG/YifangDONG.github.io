@@ -1,0 +1,52 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { publishedPosts, postSlug } from '@/lib/blog';
+
+const posts = (await publishedPosts('en')).slice(0, 8);
+---
+
+<PageLayout
+  title={SITE.titleDefault}
+  description={SITE.description}
+  lang="en"
+  canonicalPath="/"
+  alternates={pairAlternates('/', '/zh-cn/')}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    description: SITE.description,
+    inLanguage: 'en',
+  }}
+>
+  <section class="mt-2">
+    <h2 class="font-serif text-2xl font-semibold text-accent">Recent posts</h2>
+    <ul class="mt-6 space-y-4">
+      {
+        posts.map((p) => (
+          <li class="rounded-lg border border-muted bg-raised p-4 shadow-sm transition-shadow hover:shadow-md">
+            <a href={`/blog/${postSlug(p)}/`} class="block no-underline">
+              <span class="font-serif text-lg font-semibold text-ink">{p.data.title}</span>
+              <time
+                class="mt-1 block text-sm text-ink/60"
+                datetime={p.data.pubDate.toISOString()}
+              >
+                {p.data.pubDate.toLocaleDateString('en', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </time>
+              <p class="mt-2 line-clamp-3 text-sm text-ink/75">{p.data.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8">
+      <a href="/blog/">View all posts →</a>
+    </p>
+  </section>
+</PageLayout>

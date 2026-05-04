@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+
+interface Alternate {
+  hreflang: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  lang: 'en' | 'zh-cn';
+  canonicalPath: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  alternates?: Alternate[];
+}
+
+const props = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <SiteHeader lang={props.lang} />
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <slot />
+  </main>
+  <SiteFooter lang={props.lang} />
+</BaseLayout>

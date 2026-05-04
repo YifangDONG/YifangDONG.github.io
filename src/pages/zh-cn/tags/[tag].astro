@@ -1,0 +1,51 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { publishedPosts, postSlug } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await publishedPosts('zh-cn');
+  const tagSet = new Set<string>();
+  for (const p of posts) {
+    for (const t of p.data.tags) tagSet.add(t.trim());
+  }
+  return [...tagSet].map((tag) => ({
+    params: { tag },
+    props: { decodedTag: tag },
+  }));
+}
+
+const { decodedTag } = Astro.props;
+const posts = (await publishedPosts('zh-cn')).filter((p) =>
+  p.data.tags.map((t) => t.trim()).includes(decodedTag),
+);
+const canonicalPath = `/zh-cn/tags/${encodeURI(decodedTag)}/`;
+---
+
+<PageLayout
+  title={`${decodedTag} | 标签 | ${SITE.name}`}
+  description={`标签「${decodedTag}」下的文章。`}
+  lang="zh-cn"
+  canonicalPath={canonicalPath}
+  alternates={pairAlternates(`/tags/${encodeURI(decodedTag)}/`, `/zh-cn/tags/${encodeURI(decodedTag)}/`)}
+>
+  <h1 class="font-serif text-3xl font-semibold text-accent">#{decodedTag}</h1>
+  <p class="mt-2 text-ink/75">共 {posts.length} 篇</p>
+  <ul class="mt-10 space-y-4">
+    {
+      posts.map((p) => (
+        <li class="rounded-lg border border-muted bg-raised p-4 shadow-sm">
+          <a
+            href={`/zh-cn/blog/${postSlug(p)}/`}
+            class="font-serif text-lg font-semibold text-ink no-underline"
+          >
+            {p.data.title}
+          </a>
+          <time class="mt-1 block text-sm text-ink/60" datetime={p.data.pubDate.toISOString()}>
+            {p.data.pubDate.toLocaleDateString('zh-CN', { dateStyle: 'medium' })}
+          </time>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <polygon points="125,15 375,15 500,250 375,485 125,485 0,250" fill="#d63e3b"/>
+  <g stroke="#F1EEE0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Top serif bar -->
+    <line x1="330" y1="120" x2="330" y2="180"/>
+    <!-- Top curve of S -->
+    <path d="M330 155
+             C 320 125, 285 110, 245 110
+             C 190 110, 160 140, 160 175
+             C 160 215, 200 230, 250 244"/>
+    <!-- Middle diagonal connecting strokes -->
+    <path d="M250 244
+             C 305 258, 345 278, 345 320
+             C 345 350, 320 375, 280 385"/>
+    <!-- Bottom curve of S -->
+    <path d="M280 385
+             C 265 388, 248 390, 232 390
+             C 190 390, 160 372, 160 340"/>
+    <!-- Bottom serif bar -->
+    <line x1="160" y1="305" x2="160" y2="375"/>
+  </g>
+</svg>

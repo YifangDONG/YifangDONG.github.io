@@ -1,0 +1,33 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { allTags } from '@/lib/blog';
+
+const tagMap = await allTags('zh-cn');
+---
+
+<PageLayout
+  title={`标签 | ${SITE.name}`}
+  description="按标签浏览中文文章。"
+  lang="zh-cn"
+  canonicalPath="/zh-cn/tags/"
+  alternates={pairAlternates('/tags/', '/zh-cn/tags/')}
+>
+  <h1 class="font-serif text-3xl font-semibold text-accent">标签</h1>
+  <p class="mt-2 text-ink/75">仅中文文章。</p>
+  <ul class="mt-10 flex flex-wrap gap-2">
+    {
+      [...tagMap.entries()].map(([tag, count]) => (
+        <li>
+          <a
+            href={`/zh-cn/tags/${encodeURIComponent(tag)}/`}
+            class="inline-flex items-center gap-2 rounded-lg border border-muted bg-raised px-3 py-2 text-sm no-underline shadow-sm"
+          >
+            <span>{tag}</span>
+            <span class="text-ink/50">{count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

@@ -1,0 +1,83 @@
+---
+import TagLink from '@/components/TagLink.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE, absoluteUrl, pairAlternates } from '@/lib/site';
+import { findTranslation, postSlug } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'zh-cn');
+  return posts.map((entry) => ({
+    params: { slug: postSlug(entry) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const slug = postSlug(entry);
+const canonicalPath = `/zh-cn/blog/${slug}/`;
+
+const other = await findTranslation(entry);
+const alternates = other
+  ? pairAlternates(`/blog/${postSlug(other)}/`, `/zh-cn/blog/${postSlug(entry)}/`)
+  : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.pubDate.toISOString(),
+  dateModified: (entry.data.updatedDate ?? entry.data.pubDate).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: SITE.author,
+  },
+  inLanguage: 'zh-CN',
+  url: absoluteUrl(canonicalPath),
+};
+---
+
+<PageLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  lang="zh-cn"
+  canonicalPath={canonicalPath}
+  alternates={alternates}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="pb-6">
+      {
+        other ? (
+          <p class="mb-4 text-sm text-ink/70">
+            <a href={`/blog/${postSlug(other)}/`} class="font-medium">
+              English version →
+            </a>
+          </p>
+        ) : null
+      }
+      <h1 class="font-serif text-3xl font-semibold text-accent md:text-4xl">{entry.data.title}</h1>
+      <time class="mt-3 block text-sm text-ink/60" datetime={entry.data.pubDate.toISOString()}>
+        {entry.data.pubDate.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
+      {
+        entry.data.tags?.length ? (
+          <p class="mt-4 flex flex-wrap gap-2 text-sm">
+            {entry.data.tags.map((t) => (
+              <TagLink href={`/zh-cn/tags/${encodeURIComponent(t)}/`}>{t}</TagLink>
+            ))}
+          </p>
+        ) : null
+      }
+    </header>
+    <div class="markdown pt-3">
+      <Content />
+    </div>
+  </article>
+</PageLayout>

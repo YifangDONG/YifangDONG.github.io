@@ -1,0 +1,33 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { allTags } from '@/lib/blog';
+
+const tagMap = await allTags('en');
+---
+
+<PageLayout
+  title={`Tags | ${SITE.name}`}
+  description="Browse posts by tag."
+  lang="en"
+  canonicalPath="/tags/"
+  alternates={pairAlternates('/tags/', '/zh-cn/tags/')}
+>
+  <h1 class="font-serif text-3xl font-semibold text-accent">Tags</h1>
+  <p class="mt-2 text-ink/75">English posts only.</p>
+  <ul class="mt-10 flex flex-wrap gap-2">
+    {
+      [...tagMap.entries()].map(([tag, count]) => (
+        <li>
+          <a
+            href={`/tags/${encodeURIComponent(tag)}/`}
+            class="inline-flex items-center gap-2 rounded-lg border border-muted bg-raised px-3 py-2 text-sm no-underline shadow-sm"
+          >
+            <span>{tag}</span>
+            <span class="text-ink/50">{count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

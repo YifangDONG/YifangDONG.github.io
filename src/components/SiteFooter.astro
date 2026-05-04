@@ -1,0 +1,22 @@
+---
+import { routes } from '@/lib/routes';
+
+interface Props {
+  lang: 'en' | 'zh-cn';
+}
+
+const { lang } = Astro.props;
+
+const other = lang === 'en' ? 'zh-cn' : 'en';
+const otherLabel = lang === 'en' ? '中文' : 'English';
+const otherHome = routes[other].home;
+---
+
+<footer class="mt-16 border-t border-muted bg-raised/60 py-10 text-center text-sm text-ink/70">
+  <p>
+    <span>{lang === 'en' ? 'Language:' : '语言：'}</span>
+    <a href={otherHome} class="ml-2 font-medium">
+      {otherLabel}
+    </a>
+  </p>
+</footer>

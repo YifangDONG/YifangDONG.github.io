@@ -1,0 +1,38 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE, pairAlternates } from '@/lib/site';
+import { publishedPosts, postSlug, postsByYear } from '@/lib/blog';
+
+const posts = await publishedPosts('en');
+const years = postsByYear(posts);
+---
+
+<PageLayout
+  title={`Archives | ${SITE.name}`}
+  description="Posts grouped by year."
+  lang="en"
+  canonicalPath="/archives/"
+  alternates={pairAlternates('/archives/', '/zh-cn/archives/')}
+>
+  <h1 class="font-serif text-3xl font-semibold text-accent">Archives</h1>
+  <p class="mt-2 text-ink/75">English posts by year.</p>
+  {
+    years.map(([year, list]) => (
+      <section class="mt-12">
+        <h2 class="font-serif text-2xl font-semibold text-ink">{year}</h2>
+        <ul class="mt-4 space-y-3 border-l-2 border-muted pl-4">
+          {list.map((p) => (
+            <li>
+              <a href={`/blog/${postSlug(p)}/`} class="font-medium text-ink no-underline">
+                {p.data.title}
+              </a>
+              <time class="ml-2 text-sm text-ink/55" datetime={p.data.pubDate.toISOString()}>
+                {p.data.pubDate.toLocaleDateString('en', { month: 'short', day: 'numeric' })}
+              </time>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</PageLayout>
